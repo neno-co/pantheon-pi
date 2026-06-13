@@ -1,6 +1,6 @@
 # Pantheon
 
-**Pantheon is a full Agentic Harness Engineering setup for long-running software-engineering agents.** A fleet of 26 specialists where every prompt, skill, and agent is independently evaluated, versioned, and tracked — so you hand the system a goal and trust it across work that runs for hours or days. "Done" is graded by a *different* agent on a *different* model, never self-declared.
+**Pantheon is a full Agentic Harness Engineering setup for long-running software-engineering agents.** A fleet of 26 specialists where every prompt, skill, and agent is independently evaluated, versioned, and tracked - so you hand the system a goal and trust it across work that runs for hours or days. "Done" is graded by a *different* agent on a *different* model, never self-declared.
 
 It's an installable Pi **package**, not a wrapper. `pantheon` launches your existing Pi binary with a specialist primary, a delegation tool, a live Subagent UI, a persistent `/goal` loop, and full OpenTelemetry telemetry. Plain `pi` stays vanilla.
 
@@ -8,14 +8,14 @@ It's an installable Pi **package**, not a wrapper. `pantheon` launches your exis
 
 ### Judge's cut (the 60-second version)
 
-- **What it is** — an installable Pi package that turns one coding agent into an evaluated, observable fleet: a builder, independent evaluators, hunters, and researchers, routed over a protocol (`acpx`) to the right model for each job.
-- **Why it's beyond a basic loop** — the harness *itself* is the product. Prompts, tools, routing, skills, evals, and review gates are versioned and measured; a meta-improvement loop turns trace evidence into human-approved harness changes. Grounded in current AHE research ([Agentic Harness Engineering](https://arxiv.org/abs/2604.25850), [Meta-Harness](https://arxiv.org/abs/2603.28052)) — applied, not just cited.
-- **Proof it works** — we ran a single agentic session for **over a day** and had it deliver. And observability paid for itself: **~34% of delegated wall-clock was being lost to failed/timed-out runs** (surfaced in LangWatch traces, diagnosed via a 7-class failure taxonomy, fixed by a resume-not-restart redesign). The numbers are a *byproduct* of the setup — the system that records the loop is the one that improves it.
-- **Key architectural bet** — `acpx`, a delegation *protocol*, lets us launch any harness, any agent, any model, anywhere (local, VM, remote). The fleet isn't wired to one machine or one provider.
-- **Demo path** — `/define-project` → `/goal "…"` → watch the Subagent widget run the fleet live → `pantheon telemetry similar "…"` to query what happened. See [Watch the fleet work, live](#watch-the-fleet-work-live).
-- **Team** — Ihor & Joel (Neno). This is our production engineering harness, distilled.
+- **What it is** - an installable Pi package that turns one coding agent into an evaluated, observable fleet: a builder, independent evaluators, hunters, and researchers, routed over a protocol (`acpx`) to the right model for each job.
+- **Why it's beyond a basic loop** - the harness *itself* is the product. Prompts, tools, routing, skills, evals, and review gates are versioned and measured; a meta-improvement loop turns trace evidence into human-approved harness changes. Grounded in current AHE research ([Agentic Harness Engineering](https://arxiv.org/abs/2604.25850), [Meta-Harness](https://arxiv.org/abs/2603.28052)) - applied, not just cited.
+- **Proof it works** - we ran a single agentic session for **over a day** and had it deliver. And observability paid for itself: **~34% of delegated wall-clock was being lost to failed/timed-out runs** (surfaced in LangWatch traces, diagnosed via a 7-class failure taxonomy, fixed by a resume-not-restart redesign). The numbers are a *byproduct* of the setup - the system that records the loop is the one that improves it.
+- **Key architectural bet** - `acpx`, a delegation *protocol*, lets us launch any harness, any agent, any model, anywhere (local, VM, remote). The fleet isn't wired to one machine or one provider.
+- **Demo path** - `/define-project` → `/goal "…"` → watch the Subagent widget run the fleet live → `pantheon telemetry similar "…"` to query what happened. See [Watch the fleet work, live](#watch-the-fleet-work-live).
+- **Team** - Ihor & Joel (Neno). This is our production engineering harness, distilled.
 
-> **Judges:** point your own coding agent at this repo and ask it to summarize the harness. The README is written to be read by an agent as well as a human — let Claude Code / Cursor / Codex crawl it and give you the bigger picture in your own loop. That round-trip *is* the pitch: a harness legible enough that another agent can explain it back to you.
+> **Judges:** point your own coding agent at this repo and ask it to summarize the harness. The README is written to be read by an agent as well as a human - let Claude Code / Cursor / Codex crawl it and give you the bigger picture in your own loop. That round-trip *is* the pitch: a harness legible enough that another agent can explain it back to you.
 
 ---
 
@@ -23,13 +23,13 @@ It's an installable Pi **package**, not a wrapper. `pantheon` launches your exis
 
 Pantheon is opinionated about what makes agent loops trustworthy:
 
-1. **Long-running agents** — resumable work over real tasks, not one-shot prompts.
-2. **Independent evaluators** — Dike/Argus grade evidence instead of letting builders self-certify.
-3. **Trace-native observability** — every main turn, tool call, and delegation becomes inspectable telemetry.
-4. **Semantic experience memory** — prior runs are searchable by text and meaning.
-5. **Projects Wiki as company brain** — durable decisions, research, and handoffs live outside chat.
-6. **Beads as shared work graph** — task/dependency state survives across sessions and agents.
-7. **Evidence-gated AHE** — trace evidence drives harness changes only after eval/review.
+1. **Long-running agents** - resumable work over real tasks, not one-shot prompts.
+2. **Independent evaluators** - Dike/Argus grade evidence instead of letting builders self-certify.
+3. **Trace-native observability** - every main turn, tool call, and delegation becomes inspectable telemetry.
+4. **Semantic experience memory** - prior runs are searchable by text and meaning.
+5. **Projects Wiki as company brain** - durable decisions, research, and handoffs live outside chat.
+6. **Beads as shared work graph** - task/dependency state survives across sessions and agents.
+7. **Evidence-gated AHE** - trace evidence drives harness changes only after eval/review.
 
 The Projects Wiki / LLM Wiki is a first-class runtime surface: Pantheon ships Obsidian, Projects Wiki initialization, and research-filing skills so durable context can be created, searched, linked, and preserved as part of the agent loop.
 
@@ -111,7 +111,7 @@ until Dike approves the contract is implemented and the truth conditions are met
 
 ## Watch the fleet work, live
 
-A passive **Subagent widget** renders every delegated run inline in your terminal — active / queued / done / failed, final answers, artifacts, and resumable session info. Press `ctrl+0` (or run `/acpx-monitor`) to open the full Agent Explorer overlay.
+A passive **Subagent widget** renders every delegated run inline in your terminal - active / queued / done / failed, final answers, artifacts, and resumable session info. Press `ctrl+0` (or run `/acpx-monitor`) to open the full Agent Explorer overlay.
 
 ```text
 ┌─ Subagents ───────────────────────────────────────────────┐
@@ -120,20 +120,20 @@ A passive **Subagent widget** renders every delegated run inline in your termina
 │ ◐ vulkanus    active  upload-limit-vulkanus-impl           │
 │   └ editing src/api/upload.ts … 3 tools, 41s               │
 │ ⚠ argus       paused  upload-limit-argus-review  (resume)  │
-│   └ turn limit reached — resume: acpx argus session …      │
+│   └ turn limit reached - resume: acpx argus session …      │
 │ ○ dike        queued  upload-limit-dike-grade              │
 └────────────────────────────────────────────────────────────┘
 ```
 
-## The fleet — 26 specialists
+## The fleet - 26 specialists
 
-One primary agent, many focused experts. The package ships **26 specialist agents** — each a versioned prompt plus a packaged launcher under `agents/`, wired into `acpx` routing — and the primary delegates to them by name.
+One primary agent, many focused experts. The package ships **26 specialist agents** - each a versioned prompt plus a packaged launcher under `agents/`, wired into `acpx` routing - and the primary delegates to them by name.
 
 | Group | Agents | Role |
 | --- | --- | --- |
 | **Orchestration / build** | `athena` (default primary), `zeus`, `vulkanus`, `frontend-engineer` | Build, implement, and coordinate work |
 | **Planning / architecture** | `prometheus`, `oracle` | Plan the work; advise on architecture tradeoffs |
-| **Independent evaluation** | `dike` (Done-Contract grading), `argus` (adversarial review), `meta-reviewer` (telemetry-backed after-action) | Grade "done" — independently of who built it |
+| **Independent evaluation** | `dike` (Done-Contract grading), `argus` (adversarial review), `meta-reviewer` (telemetry-backed after-action) | Grade "done" - independently of who built it |
 | **Hunters** | `hunter-security`, `hunter-silent-failure`, `hunter-type-design`, `hunter-test-coverage`, `hunter-comments`, `hunter-code-review`, `hunter-simplifier` | Targeted code-quality and risk sweeps |
 | **Research / codebase** | `mnemosyne`, `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, `explore`, `thoughts-locator`, `thoughts-analyzer`, `librarian` | Find, read, and explain code and notes |
 | **Docs / language** | `document-writer`, `translator` | Write documentation; translate |
@@ -144,14 +144,14 @@ Pantheon is multi-provider on purpose. Judgment-heavy work runs on stronger, cos
 
 | Role | Model |
 | --- | --- |
-| Architecture & evaluation — `oracle`, `dike`, `argus`, `meta-reviewer` | Claude Opus 4.8 |
-| Primary builder — `athena`, `zeus` | OpenAI Codex / gpt-5.5 |
+| Architecture & evaluation - `oracle`, `dike`, `argus`, `meta-reviewer` | Claude Opus 4.8 |
+| Primary builder - `athena`, `zeus` | OpenAI Codex / gpt-5.5 |
 | Frontend & hunters | Gemini 3.1 Pro |
 | Analysis & exploration | Claude Sonnet 4.6 |
-| Docs — `document-writer` | Claude Sonnet 4.5 |
-| Cheap, fast lookups — `codebase-locator`, `codebase-pattern-finder`, `thoughts-locator` | Gemini 3 Flash |
+| Docs - `document-writer` | Claude Sonnet 4.5 |
+| Cheap, fast lookups - `codebase-locator`, `codebase-pattern-finder`, `thoughts-locator` | Gemini 3 Flash |
 
-Full routing — including a few planning and memory roles that run on other Claude Opus tiers — lives in `agents/manifests/acpx-baseline.json`.
+Full routing - including a few planning and memory roles that run on other Claude Opus tiers - lives in `agents/manifests/acpx-baseline.json`.
 
 ## Delegation transport: acpx
 
@@ -162,7 +162,7 @@ acpx <agent> session "<prompt>"   # named, resumable run (default)
 acpx <agent> exec "<prompt>"      # one-shot, stateless lookup
 ```
 
-- **Session-first and resumable.** Default `runType=session`, named sessions, 24h TTL — resume, don't restart. A run that hits its turn limit surfaces as a resumable "needs attention" pause with explicit resume instructions, not a hard failure. (This redesign is the payoff in [the 34% story](#the-payoff-the-34-story) below.)
+- **Session-first and resumable.** Default `runType=session`, named sessions, 24h TTL - resume, don't restart. A run that hits its turn limit surfaces as a resumable "needs attention" pause with explicit resume instructions, not a hard failure. (This redesign is the payoff in [the 34% story](#the-payoff-the-34-story) below.)
 - **Slash commands.** `/acpx` shows the acpx path and usage; `/acpx-monitor` (also `ctrl+0`) opens the Agent Explorer overlay.
 - **Bundled runtime tools** added to the Pi session: `code_exec` (bounded shell confined to the workspace), `hashline` (hash-safe edits that refuse to apply on stale content), `structural_search` (ast-grep structural search/rewrite), LSP tools via `pi-lsp`, and best-effort post-write diagnostics for JS/TS, Deno, Rust, and Elixir.
 
@@ -170,11 +170,11 @@ acpx <agent> exec "<prompt>"      # one-shot, stateless lookup
 
 Pantheon bundles the open-source **[pi-goal](https://www.npmjs.com/package/pi-goal) extension (by michaelliv, MIT)**, so `/goal "<objective>"` ships in the box. It's a persistent, budget-aware, resumable objective loop: it keeps the primary agent working across turns until the objective is complete, paused, or a token budget is reached, and it survives reloads (it force-pauses on reload and never silently resumes).
 
-On its own, pi-goal runs a **single-agent** loop with a self-completion-audit. The Pantheon difference is a **composition** — the **Separate-Evaluator-Implementer (SEI)** loop:
+On its own, pi-goal runs a **single-agent** loop with a self-completion-audit. The Pantheon difference is a **composition** - the **Separate-Evaluator-Implementer (SEI)** loop:
 
-> The agent driving the goal (`athena`) routes verification to **independent** evaluators via `acpx`. A mandatory `argus` adversarial review must pass before long-term work lands, and `dike` grades the result against a frozen Done-Contract — **PASS / FAIL / UNVERIFIED**, demanding executed proof and refusing to grade unwritten criteria.
+> The agent driving the goal (`athena`) routes verification to **independent** evaluators via `acpx`. A mandatory `argus` adversarial review must pass before long-term work lands, and `dike` grades the result against a frozen Done-Contract - **PASS / FAIL / UNVERIFIED**, demanding executed proof and refusing to grade unwritten criteria.
 
-So "done" is graded by a different agent on a different model than the one that wrote the code — not self-declared.
+So "done" is graded by a different agent on a different model than the one that wrote the code - not self-declared.
 
 ## Trace-native observability
 
@@ -189,7 +189,7 @@ pantheon.pi.main
 
 Every failed delegated run is classified into a **7-class failure taxonomy** on a `pantheon.failure.class` attribute: `max_turns`, `timeout`, `auth`, `set_model_rejected`, `rate_limit`, `aborted`, `other`. This taxonomy is what made the causes diagnosable below.
 
-### Local telemetry index — a queryable experience substrate
+### Local telemetry index - a queryable experience substrate
 
 A zero-daemon SQLite database at `~/.pantheon/telemetry.db` ingests traces and session files and supports both **full-text search (FTS5)** and **semantic / vector similarity search**. Query your agents' history from the CLI:
 
@@ -202,7 +202,7 @@ Full command set: `pantheon telemetry <runs|slow|trace|session-file|search|simil
 
 ## The payoff: the 34% story
 
-Observability isn't decoration — it changed the design. Measured on our delegated-run telemetry corpus, **~34% of delegated wall-clock was being lost to failed or timed-out runs.** The local telemetry index surfaced it; the 7-class failure taxonomy in the traces exposed the causes (turn limits, timeouts, session/model issues); the fix was the **session-first, resume-not-restart** redesign now built into `acpx` — a run that hits its turn limit pauses as a resumable "needs attention" handoff instead of dying.
+Observability isn't decoration - it changed the design. Measured on our delegated-run telemetry corpus, **~34% of delegated wall-clock was being lost to failed or timed-out runs.** The local telemetry index surfaced it; the 7-class failure taxonomy in the traces exposed the causes (turn limits, timeouts, session/model issues); the fix was the **session-first, resume-not-restart** redesign now built into `acpx` - a run that hits its turn limit pauses as a resumable "needs attention" handoff instead of dying.
 
 Observe → diagnose → fix. The harness that records the loop is the same one that let us improve it. This isn't a one-off: the same loop lets us point the **meta-reviewer** at the trace store to find slow sessions and optimize them. (Figure is from our own analyzed corpus, not a universal benchmark.)
 
@@ -210,7 +210,7 @@ Observe → diagnose → fix. The harness that records the loop is the same one 
 
 Pantheon treats the harness itself as the product: prompts, tools, routing, manifests, skills, evals, sessions, permissions, validation gates, review policy, and telemetry. This follows two recent research threads:
 
-- **[Agentic Harness Engineering](https://arxiv.org/abs/2604.25850)** frames prompts, tools, middleware, memory, skills, and sub-agent configs as auditable adaptation surfaces. Its reported Terminal-Bench 2 result moves pass@1 from **69.7% → 77.0%** through evidence-backed harness edits — this is the AHE paper's benchmark result, not Pantheon's. The transferable lesson for Pantheon is decision observability: every harness change should cite evidence, predicted fixes, and regression risks.
+- **[Agentic Harness Engineering](https://arxiv.org/abs/2604.25850)** frames prompts, tools, middleware, memory, skills, and sub-agent configs as auditable adaptation surfaces. Its reported Terminal-Bench 2 result moves pass@1 from **69.7% → 77.0%** through evidence-backed harness edits - this is the AHE paper's benchmark result, not Pantheon's. The transferable lesson for Pantheon is decision observability: every harness change should cite evidence, predicted fixes, and regression risks.
 - **[Meta-Harness](https://arxiv.org/abs/2603.28052)** shows an outer loop where a coding-agent proposer inspects prior harness candidates, traces, scores, and artifacts before proposing the next harness candidate. Its lesson for Pantheon is full-history, selective access: traces should become a queryable experience store, not screenshots thrown away after a demo.
 
 Pantheon's AHE loop is deliberately evidence-gated and human-approved:
@@ -226,15 +226,15 @@ trace evidence
 
 That is why this repo carries versioned prompts/manifests, telemetry indexing, fixture and live eval paths, proof-matrix tests, and mandatory review policy for durable functionality. Pantheon does not just use agents; it improves the system that runs them.
 
-## How it fits — vs a single tool loop
+## How it fits - vs a single tool loop
 
-Pantheon keeps your plain Pi session and wraps four things around it: a fleet you can route to, independent evaluators that grade the result, a trace + telemetry record of every run, and an AHE loop for improving the harness. The point isn't more agents — it's the right specialist per task, an outside check on "done," and a loop you can actually inspect, evaluate, and improve.
+Pantheon keeps your plain Pi session and wraps four things around it: a fleet you can route to, independent evaluators that grade the result, a trace + telemetry record of every run, and an AHE loop for improving the harness. The point isn't more agents - it's the right specialist per task, an outside check on "done," and a loop you can actually inspect, evaluate, and improve.
 
-## Collaboration — two teams
+## Collaboration - two teams
 
-**The humans.** Pantheon is built by **Ihor** and **Joel** at **Neno**, where this harness runs in production. What's in this repo is that engineering setup distilled: Joel owns the architecture narrative and the demo; Ihor owns the implementation and fields Q&A. We split the way the agents do — one person frames "done," the other builds toward it.
+**The humans.** Pantheon is built by **Ihor** and **Joel** at **Neno**, where this harness runs in production. What's in this repo is that engineering setup distilled: Joel owns the architecture narrative and the demo; Ihor owns the implementation and fields Q&A. We split the way the agents do - one person frames "done," the other builds toward it.
 
-**The fleet as a team.** The deeper collaboration story is structural: Pantheon enforces a *division of responsibilities across agents*. The builder (`athena`/`zeus`) never grades its own work — an adversarial reviewer (`argus`) and an independent grader (`dike`) on different models must sign off first, hunters run targeted risk sweeps, and researchers feed context in. Different skills, different models, different perspectives, combined through `acpx` routing to reach an outcome no single loop would.
+**The fleet as a team.** The deeper collaboration story is structural: Pantheon enforces a *division of responsibilities across agents*. The builder (`athena`/`zeus`) never grades its own work - an adversarial reviewer (`argus`) and an independent grader (`dike`) on different models must sign off first, hunters run targeted risk sweeps, and researchers feed context in. Different skills, different models, different perspectives, combined through `acpx` routing to reach an outcome no single loop would.
 
 ## Commands
 
@@ -256,17 +256,17 @@ npm pack --dry-run       # verify publishable package contents
 
 Zero-config for local use when Pi and `acpx` are already installed. Optional environment variables:
 
-- `PANTHEON_ACPX_BIN` — custom `acpx` binary path.
-- `PANTHEON_REQUIRE_ACPX=true` — fail install checks when `acpx` is unavailable.
-- `LANGWATCH_API_KEY` — enable hosted LangWatch trace export.
-- `LANGWATCH_ENDPOINT` — custom LangWatch endpoint.
-- `PANTHEON_PI_BIN` — override the Pi binary that `pantheon` (and `bun run test:e2e`) launches; defaults to `pi` on your `PATH`.
+- `PANTHEON_ACPX_BIN` - custom `acpx` binary path.
+- `PANTHEON_REQUIRE_ACPX=true` - fail install checks when `acpx` is unavailable.
+- `LANGWATCH_API_KEY` - enable hosted LangWatch trace export.
+- `LANGWATCH_ENDPOINT` - custom LangWatch endpoint.
+- `PANTHEON_PI_BIN` - override the Pi binary that `pantheon` (and `bun run test:e2e`) launches; defaults to `pi` on your `PATH`.
 
 For local LangWatch development, copy `.env.langwatch.local.example` to `.env.langwatch.local` (gitignored).
 
 ## Package boundary
 
-Pantheon is a Pi **package/extension** — it does not replace Pi. It keeps a strict, in-sync package contract: `package.json` (`files` / `pi.extensions` / `pi.skills`), the agent prompts and launchers under `agents/`, the acpx manifest, the installer, and the docs/demo assets. Tests assert this contract so installs fail fast when prompts, launchers, or manifest entries drift.
+Pantheon is a Pi **package/extension** - it does not replace Pi. It keeps a strict, in-sync package contract: `package.json` (`files` / `pi.extensions` / `pi.skills`), the agent prompts and launchers under `agents/`, the acpx manifest, the installer, and the docs/demo assets. Tests assert this contract so installs fail fast when prompts, launchers, or manifest entries drift.
 
 Internal project-management data, generated reports, private research notes, and unrelated skills are not part of the public package.
 
@@ -283,6 +283,6 @@ Quality bars are real: `bun run validate` runs build + install-check + Biome lin
 
 ## Credits & license
 
-Pantheon is built **on [Pi](https://github.com/earendil-works)** — a minimal-core, terminal-first, multi-provider coding agent by **@earendil-works / @mariozechner**. The bundled `/goal` loop is the **[pi-goal](https://www.npmjs.com/package/pi-goal)** extension by **michaelliv** (MIT). Pantheon adds the specialist fleet, acpx routing, the live Subagent UI, independent evaluation, and the observability/AHE layer on top.
+Pantheon is built **on [Pi](https://github.com/earendil-works)** - a minimal-core, terminal-first, multi-provider coding agent by **@earendil-works / @mariozechner**. The bundled `/goal` loop is the **[pi-goal](https://www.npmjs.com/package/pi-goal)** extension by **michaelliv** (MIT). Pantheon adds the specialist fleet, acpx routing, the live Subagent UI, independent evaluation, and the observability/AHE layer on top.
 
-MIT — see [LICENSE](./LICENSE).
+MIT - see [LICENSE](./LICENSE).

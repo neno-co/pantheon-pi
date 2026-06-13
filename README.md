@@ -27,7 +27,7 @@ Pantheon is opinionated about what makes agent loops trustworthy:
 2. **Independent evaluators** - Dike/Argus grade evidence instead of letting builders self-certify.
 3. **Trace-native observability** - every main turn, tool call, and delegation becomes inspectable telemetry.
 4. **Semantic experience memory** - prior runs are searchable by text and meaning.
-5. **Projects Wiki as company brain** - durable decisions, research, and handoffs live outside chat.
+5. **[LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (by Andrij Karpathy) as company brain** - durable decisions, research, and handoffs live outside chat.
 6. **Beads as shared work graph** - task/dependency state survives across sessions and agents.
 7. **Evidence-gated AHE** - trace evidence drives harness changes only after eval/review.
 

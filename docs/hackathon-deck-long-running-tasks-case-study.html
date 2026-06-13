@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Long-running tasks at Neno: a case study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f3f4f6;
+    --ink: #0c0c12;
+    --muted: #5b5f6b;
+    --faint: #8a8e99;
+    --blue: #2f43e0;
+    --purple: #7c5cd6;
+    --orange: #e8843f;
+    --green: #1f9d6b;
+    --teal: #0f9aa6;
+    --card-border: #e3e4e9;
+    --tint-orange: #fbe9da;
+    --tint-blue: #e1e4fb;
+    --tint-purple: #ece1fb;
+    --tint-green: #d9f0e7;
+    --tint-teal: #d6f0f2;
+    --slide-w: 1280px;
+    --slide-h: 720px;
+    --mono: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #16171c; font-family: 'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif; color: var(--ink); overflow: hidden; -webkit-font-smoothing: antialiased; }
+  #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .slide { position: absolute; width: var(--slide-w); height: var(--slide-h); background: var(--bg); display: none; overflow: hidden; }
+  .slide.active { display: block; }
+
+  .gradient {
+    background:
+      radial-gradient(120% 130% at 78% 42%, rgba(232,132,63,0.60) 0%, rgba(232,132,63,0) 46%),
+      radial-gradient(105% 110% at 55% 30%, rgba(124,92,214,0.48) 0%, rgba(124,92,214,0) 52%),
+      radial-gradient(90% 90% at 38% 32%, rgba(47,67,224,0.30) 0%, rgba(47,67,224,0) 55%),
+      linear-gradient(135deg, #f5f6f9 0%, #cfd2f3 38%, #e7c9ec 66%, #f7d9c0 100%);
+  }
+
+  .pad { position: absolute; inset: 0; padding: 56px 72px; }
+  .eyebrow { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin-bottom: 12px; }
+  h2.head { font-size: 40px; font-weight: 800; line-height: 1.08; letter-spacing: -0.015em; max-width: 1090px; }
+  h2.head.sm { font-size: 33px; }
+  .sub { font-size: 20px; font-weight: 400; color: var(--muted); margin-top: 14px; max-width: 1000px; line-height: 1.35; }
+
+  .center-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 72px; }
+  .wordmark { font-size: 132px; font-weight: 900; letter-spacing: -0.04em; line-height: 1; text-align: center; }
+  .wordmark sup { font-size: 30px; font-weight: 700; vertical-align: super; margin-left: 6px; }
+  .cover-sub { text-align: center; font-size: 30px; font-weight: 600; margin-top: 22px; }
+  .cover-tag { text-align: center; font-size: 19px; font-weight: 500; margin-top: 10px; color: rgba(12,12,18,0.6); }
+  .section-title { font-size: 50px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; max-width: 1040px; }
+
+  .stat-row { display: flex; gap: 30px; margin-top: 52px; }
+  .stat { flex: 1; }
+  .stat .num { font-size: 92px; font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; }
+  .stat .lbl { font-size: 19px; font-weight: 500; color: var(--muted); margin-top: 14px; line-height: 1.3; }
+  .c-blue { color: var(--blue); } .c-purple { color: var(--purple); } .c-orange { color: var(--orange); } .c-green { color: var(--green); } .c-teal { color: var(--teal); }
+
+  .bignum-pair { display: flex; gap: 36px; margin-top: 30px; }
+  .bignum { flex: 1; background: #fff; border: 1px solid var(--card-border); border-radius: 16px; padding: 26px 30px; }
+  .bignum .num { font-size: 70px; font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; }
+  .bignum .cap { font-size: 18px; font-weight: 700; margin-top: 10px; }
+  .bignum .det { font-size: 15px; font-weight: 400; color: var(--muted); margin-top: 7px; line-height: 1.35; }
+
+  .points { margin-top: 28px; display: flex; flex-direction: column; gap: 16px; max-width: 1040px; }
+  .point { font-size: 21px; line-height: 1.4; color: #2c2f37; padding-left: 26px; position: relative; }
+  .point::before { content: "–"; position: absolute; left: 0; color: var(--faint); }
+  .callout { margin-top: 24px; background: var(--tint-blue); border-radius: 14px; padding: 20px 26px; max-width: 1040px; }
+  .callout .k { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue); margin-bottom: 7px; }
+  .callout p { font-size: 21px; font-weight: 600; line-height: 1.35; color: var(--ink); }
+  .callout.purple { background: var(--tint-purple); } .callout.purple .k { color: var(--purple); }
+  .callout.orange { background: var(--tint-orange); } .callout.orange .k { color: var(--orange); }
+
+  .split { display: flex; gap: 44px; margin-top: 26px; }
+  .split .left { flex: 1; } .split .right { flex: 1.05; }
+
+  .tc-card { background: #fff; border: 1px solid var(--card-border); border-radius: 16px; padding: 22px 26px; }
+  .tc-card .tc-h { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--faint); margin-bottom: 14px; }
+  .tc { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #eceef2; font-size: 18px; line-height: 1.3; }
+  .tc:last-child { border-bottom: none; }
+  .tag { font-family: var(--mono); font-size: 13px; font-weight: 600; padding: 3px 9px; border-radius: 6px; white-space: nowrap; margin-top: 1px; }
+  .tag-auto { background: var(--tint-green); color: #0e7a52; }
+  .tag-manual { background: var(--tint-purple); color: #5b3fb0; }
+  code, .mono { font-family: var(--mono); }
+
+  /* terminal */
+  .term { background: #14151b; border-radius: 14px; padding: 22px 26px; font-family: var(--mono); color: #e6e7ee; box-shadow: 0 10px 30px rgba(12,12,18,0.18); }
+  .term .dots { display: flex; gap: 7px; margin-bottom: 16px; }
+  .term .dots i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .term .dots i:nth-child(1){background:#ff5f57;} .term .dots i:nth-child(2){background:#febc2e;} .term .dots i:nth-child(3){background:#28c840;}
+  .term .line { font-size: 17px; line-height: 1.6; }
+  .term .prompt { color: #8fa0ff; } .term .cmd { color: #f6f7fb; font-weight: 600; } .term .arg { color: #c5cad9; } .term .cmt { color: #6b7186; } .term .ok { color: #4ad28a; } .term .big { font-size: 19px; }
+
+  /* ---------- agent network (lanes) ---------- */
+  .net { margin-top: 22px; position: relative; }
+  .lanes { display: flex; align-items: stretch; gap: 10px; }
+  .goal-pill { align-self: center; background: var(--ink); color: #fff; font-family: var(--mono); font-weight: 700; font-size: 18px; padding: 14px 14px; border-radius: 12px; writing-mode: vertical-rl; transform: rotate(180deg); }
+  .lane { flex: 1; background: #fff; border: 1px solid var(--card-border); border-top-width: 5px; border-radius: 14px; padding: 14px 16px; }
+  .lane h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .lane.orchestrate { border-top-color: var(--blue); } .lane.orchestrate h4 { color: var(--blue); }
+  .lane.build { border-top-color: var(--teal); } .lane.build h4 { color: var(--teal); }
+  .lane.verify { border-top-color: var(--orange); } .lane.verify h4 { color: var(--orange); }
+  .agent { padding: 9px 0; border-bottom: 1px solid #f0f1f4; }
+  .agent:last-child { border-bottom: none; }
+  .agent .an { font-size: 18px; font-weight: 700; }
+  .agent .ar { font-size: 14px; color: var(--muted); line-height: 1.25; margin-top: 1px; }
+  .mb { display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 5px; background: #eef0f4; color: #4a4e5a; margin-left: 4px; vertical-align: middle; }
+  .lane-arrow { align-self: center; font-size: 26px; color: var(--faint); font-weight: 700; }
+  .lane-note { font-size: 12.5px; color: var(--faint); margin-top: 8px; font-style: italic; line-height: 1.3; }
+  .learn-bar { margin-top: 10px; background: #fff; border: 1px solid var(--card-border); border-left: 5px solid var(--green); border-radius: 12px; padding: 12px 18px; display: flex; align-items: baseline; gap: 12px; }
+  .learn-bar .lk { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--green); white-space: nowrap; }
+  .learn-bar .lt { font-size: 16px; color: #2c2f37; }
+  .learn-bar.payoff { border-left-color: var(--orange); }
+  .learn-bar.payoff .lk { color: var(--orange); }
+  .retry { position: absolute; top: -6px; right: 6px; font-size: 13px; font-weight: 700; color: var(--orange); font-family: var(--mono); background: var(--tint-orange); padding: 4px 12px; border-radius: 20px; }
+  .net-foot { font-size: 13px; color: var(--faint); margin-top: 10px; font-style: italic; }
+
+  /* ---------- pillars ---------- */
+  .pillars { display: flex; gap: 20px; margin-top: 34px; }
+  .pillar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+  .pillar { flex: 1; background: #fff; border: 1px solid var(--card-border); border-top-width: 5px; border-radius: 14px; padding: 22px 22px; }
+  .pillar.compact { padding: 16px 18px; }
+  .pillar .pn { font-size: 14px; font-weight: 700; }
+  .pillar .pt { font-size: 22px; font-weight: 800; margin-top: 8px; line-height: 1.12; letter-spacing: -0.01em; }
+  .pillar.compact .pt { font-size: 18px; margin-top: 6px; }
+  .pillar .pd { font-size: 15px; color: var(--muted); margin-top: 12px; line-height: 1.4; }
+  .pillar.compact .pd { font-size: 13px; margin-top: 8px; line-height: 1.35; }
+  .pillar .plink { font-size: 12px; font-family: var(--mono); color: var(--blue); margin-top: 10px; word-break: break-all; }
+  .pillar.compact .plink { font-size: 10.5px; margin-top: 7px; }
+  .pillar .pbadge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; margin-top: 9px; }
+  .badge-define { background: var(--tint-green); color: #0e7a52; }
+  .badge-run { background: var(--tint-blue); color: var(--blue); }
+  .bt-orange{border-top-color:var(--orange)!important;} .bt-blue{border-top-color:var(--blue)!important;} .bt-purple{border-top-color:var(--purple)!important;} .bt-green{border-top-color:var(--green)!important;} .bt-teal{border-top-color:var(--teal)!important;}
+  .pillar.bt-orange .pn{color:var(--orange);} .pillar.bt-blue .pn{color:var(--blue);} .pillar.bt-purple .pn{color:var(--purple);} .pillar.bt-green .pn{color:var(--green);} .pillar.bt-teal .pn{color:var(--teal);}
+
+  /* close */
+  .req { margin-top: 26px; display: flex; flex-direction: column; gap: 14px; max-width: 920px; margin-left: auto; margin-right: auto; }
+  .req .ri { font-size: 21px; font-weight: 500; color: #1f2229; padding-left: 32px; position: relative; }
+  .req .ri::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+  .signoff { text-align: center; font-size: 22px; font-weight: 700; margin-top: 34px; color: rgba(12,12,18,0.6); }
+  .signoff .b { color: var(--blue); }
+
+  .bl-orange { border-left-color: var(--orange) !important; } .bl-blue { border-left-color: var(--blue) !important; } .bl-purple { border-left-color: var(--purple) !important; }
+
+  #counter { position: fixed; bottom: 16px; right: 20px; z-index: 50; font-size: 13px; color: #6c6f79; background: rgba(255,255,255,0.85); padding: 4px 10px; border-radius: 20px; }
+  #notes { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(12,12,18,0.94); color: #e8e9ee; padding: 16px 26px; font-size: 15px; line-height: 1.45; display: none; border-top: 2px solid var(--blue); }
+  #notes.show { display: block; }
+  #notes b { color: #8fa0ff; }
+  #hint { position: fixed; bottom: 16px; left: 20px; z-index: 50; font-size: 12px; color: #6c6f79; }
+  @media print {
+    html, body { overflow: visible; background: #fff; }
+    #stage { position: static; }
+    .slide { display: block !important; position: relative; page-break-after: always; margin: 0 auto; box-shadow: none; }
+    #counter, #notes, #hint { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ===================== COVER ===================== -->
+  <section class="slide active gradient" data-notes="Everyone can make an agent loop. We're going to show you how we made a loop our org actually trusts to run on real work, starting with the receipts. This is a case study: the proof first, then the architecture behind it.">
+    <div class="center-wrap">
+      <div class="wordmark" style="font-size:74px;">pantheon<sup>π</sup></div>
+      <div class="section-title" style="text-align:center; margin: 16px auto 0; font-size:48px;">Long-running tasks at Neno</div>
+      <div class="cover-sub">A case study on how we solved it</div>
+      <div class="cover-tag">How a frontier org got to trusted, overnight-grade agentic work, and the architecture that gets anyone there.</div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 1: PROOF FIRST ===================== -->
+  <section class="slide" data-notes="We lead with the receipts. 100% agent-implemented, human-gated, for seven months, and trusted enough that people who don't write code now operate the loop. The 98% accept rate is high BECAUSE the verified loop earns it, not blind acceptance. The 34% is delegated wall-clock lost to failed/timed-out runs in our analyzed corpus: scoped evidence, not a universal benchmark. The rest of this deck is how we got here.">
+    <div class="pad">
+      <div class="eyebrow">Proof · we already run on this</div>
+      <h2 class="head sm">Already in production at Neno: 100% of our code is written with AI, and we trust it.</h2>
+      <div class="bignum-pair">
+        <div class="bignum">
+          <div class="num c-blue">100%</div>
+          <div class="cap">of PRs agent-implemented since Nov 2025</div>
+          <div class="det">Every change, human-gated through the verified loop, for seven months.</div>
+        </div>
+        <div class="bignum">
+          <div class="num c-orange">98%+</div>
+          <div class="cap">Claude Code suggestion acceptance since Feb 2026</div>
+          <div class="det">High <b>because</b> the loop earns it: every suggestion passes the human gate, not a rubber stamp.</div>
+        </div>
+      </div>
+      <div class="split" style="margin-top:22px; gap:36px;">
+        <div class="callout purple" style="margin-top:0; flex:1;">
+          <div class="k">The frontier</div>
+          <p style="font-size:18px; font-weight:500;">Just extended full-monorepo agent access to non-engineers: GTM &amp; accounting; first PR in flight. Leading edge of trust, not yet a proven practice.</p>
+        </div>
+        <div class="callout orange" style="margin-top:0; flex:1;">
+          <div class="k">~34% reclaimed</div>
+          <p style="font-size:18px; font-weight:500;">Telemetry found ~34% of delegated wall-clock (analyzed corpus) lost to failed/timed-out runs, driving session-first, resume-don't-restart.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 2: THE 8 PILLARS ===================== -->
+  <section class="slide" data-notes="These 8 are the requirements we kept rediscovering the hard way: the critical requirements for tooling that makes long-running agentic tasks actually work, for us and for any org. Pillar 1 pins WHAT done means. Pillars 2 through 8 run the work, prove it, remember it, and improve the harness itself. Everything else in this deck maps to these.">
+    <div class="pad">
+      <div class="eyebrow">The requirements we identified</div>
+      <h2 class="head sm">8 pillars make a long-running loop trustworthy.</h2>
+      <div class="pillar-grid">
+        <div class="pillar compact bt-green">
+          <div class="pn">01</div>
+          <div class="pt">Truth Conditions Framework</div>
+          <div class="pd">Feature-complete descriptions of the system after the work has completed.</div>
+          <span class="pbadge badge-define">Define done</span>
+        </div>
+        <div class="pillar compact bt-blue">
+          <div class="pn">02</div>
+          <div class="pt">Long-running agents</div>
+          <div class="pd">Resumable work over real tasks, not one-shot prompts.</div>
+          <span class="pbadge badge-run">Run · verify · improve</span>
+        </div>
+        <div class="pillar compact bt-orange">
+          <div class="pn">03</div>
+          <div class="pt">Independent evaluators</div>
+          <div class="pd">Dike / Argus grade evidence instead of letting builders self-certify.</div>
+          <span class="pbadge badge-run">Run · verify · improve</span>
+        </div>
+        <div class="pillar compact bt-purple">
+          <div class="pn">04</div>
+          <div class="pt">Trace-native observability</div>
+          <div class="pd">Every main turn, tool call, and delegation becomes inspectable telemetry.</div>
+          <span class="pbadge badge-run">Run · verify · improve</span>
+        </div>
+        <div class="pillar compact bt-teal">
+          <div class="pn">05</div>
+          <div class="pt">Semantic experience memory</div>
+          <div class="pd">Prior runs are searchable by text and meaning.</div>
+          <span class="pbadge badge-run">Run · verify · improve</span>
+        </div>
+        <div class="pillar compact bt-blue">
+          <div class="pn">06</div>
+          <div class="pt">LLM Wiki as company brain</div>
+          <div class="pd">Durable decisions, research, and handoffs live outside chat.</div>
+          <span class="pbadge badge-run">Run · verify · improve</span>
+        </div>
+        <div class="pillar compact bt-purple">
+          <div class="pn">07</div>
+          <div class="pt">Beads as shared work graph</div>
+          <div class="pd">Task / dependency state survives across sessions and agents.</div>
+          <span class="pbadge badge-run">Run · verify · improve</span>
+        </div>
+        <div class="pillar compact bt-orange">
+          <div class="pn">08</div>
+          <div class="pt">Evidence-gated AHE</div>
+          <div class="pd">Trace evidence drives harness changes only after eval / review.</div>
+          <span class="pbadge badge-run">Run · verify · improve</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 3: OUR SUBMISSIONS ===================== -->
+  <section class="slide" data-notes="We submitted two things: the framework that defines done, and the harness that runs against it. No custom pipeline or tooling: the truth conditions ARE the contract the loop runs against; the dev just points /goal at the Linear project. Any team can do this today; the only requirement is that they can run PI.">
+    <div class="pad">
+      <div class="eyebrow">Our submissions</div>
+      <h2 class="head">Truth Conditions + Pantheon: two pieces, one command.</h2>
+      <div class="split" style="margin-top:20px; gap:20px;">
+        <div class="callout" style="margin-top:0; flex:1;">
+          <div class="k">Pillar 1 · Truth Conditions</div>
+          <p style="font-size:18px; font-weight:500;">The <code>/define-project</code> skill that pins "done" before you start.</p>
+        </div>
+        <div class="callout purple" style="margin-top:0; flex:1;">
+          <div class="k">Pillars 2&ndash;8 · Pantheon</div>
+          <p style="font-size:18px; font-weight:500;">The ACPX-driven multi-agent harness that runs the work and grades it.</p>
+        </div>
+      </div>
+      <div class="term" style="margin-top:22px; max-width:1080px;">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="line"><span class="prompt">$</span> <span class="cmd">/define-project</span> <span class="cmt"># &rarr; project + truth conditions live in Linear</span></div>
+        <div class="line" style="margin-top:14px;"><span class="prompt">$</span> <span class="cmd">/goal</span> <span class="arg big">implement the functionality outlined in [Linear project link]</span></div>
+        <div class="line"><span class="arg big">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;until Dike approves the contract is implemented and the truth conditions are met</span></div>
+        <div class="line" style="margin-top:14px;"><span class="ok">↺</span> <span class="cmt">reads the project · builds · loops with the independent evaluator until every truth condition passes</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 4: PILLAR 1 TRUTH CONDITIONS ===================== -->
+  <section class="slide" data-notes="Pillar 1. A tool to help you define your contracts up front; at Neno we call this the Truth Conditions framework. 'Done' stops being a vibe and becomes something an independent party can verify. These are real truth conditions from our Reconciliation KPIs project: each is either an [auto] check an agent can assert with SQL, or a [manual] human sign-off. The project, its truth conditions, and milestones are written straight into Linear as the shared source of truth.">
+    <div class="pad">
+      <div class="eyebrow">Pillar 1 · define done</div>
+      <h2 class="head">Pillar 1: The Truth Conditions Framework</h2>
+      <div class="split">
+        <div class="left">
+          <div class="points" style="margin-top:22px; gap:18px;">
+            <div class="point"><code>/define-project</code> interviews the team and produces <b>Truth Conditions</b>: the north star <i>and</i> the loop's stop condition.</div>
+            <div class="point">Each is <span class="c-green">[auto]</span> (an agent runs a check and asserts the outcome) or <span class="c-purple">[manual]</span> (an explicit human sign-off gate).</div>
+            <div class="point">Project, conditions &amp; milestones are written straight into <b>Linear</b> as the shared source of truth.</div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="tc-card" style="padding:18px 22px;">
+            <div class="tc-h">Truth Conditions · real example (Reconciliation KPIs)</div>
+            <div class="tc" style="font-size:14.5px; padding:8px 0;"><span class="tag tag-auto">[auto]</span><span>Every bill/receipt lifecycle timestamp + actor is queryable in Postgres: created, first review, approval, accepted link, reconciled (from Exact sync).</span></div>
+            <div class="tc" style="font-size:14.5px; padding:8px 0;"><span class="tag tag-auto">[auto]</span><span>Processing, queue, review &amp; reconciliation elapsed times derive from SQL alone: no logs, UI reconstruction, or spreadsheets.</span></div>
+            <div class="tc" style="font-size:14.5px; padding:8px 0;"><span class="tag tag-auto">[auto]</span><span>No partial KPIs: an approved bill has both <code>approvedAt</code> + <code>approvedByUserId</code>; a failed Exact sync never counts as reconciled.</span></div>
+            <div class="tc" style="font-size:14.5px; padding:8px 0;"><span class="tag tag-auto">[auto]</span><span>Approval backfills <code>firstReviewedAt</code> / <code>ById</code> so the created &rarr; first-review &rarr; approval funnel stays monotonic.</span></div>
+            <div class="tc" style="font-size:14.5px; padding:8px 0;"><span class="tag tag-manual">[manual]</span><span>The Reconciliation KPIs skill documents the query path, SQL definitions, cutoff rules &amp; null semantics, including safe GCP read-only access.</span></div>
+            <div class="tc" style="font-size:14.5px; padding:8px 0;"><span class="tag tag-manual">[manual]</span><span>Nick / Matthew / Yaroslav can review infographics tying the KPI lifecycle to accountant-time and clients-per-accountant goals.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 5: PILLARS 2-8 THE PANTHEON ===================== -->
+  <section class="slide" data-notes="Pillars 2 through 8 are the Pantheon. Each agent attacks the work from a different angle: writing, adversarial review, grading, understanding the wider world of Neno. All delegation runs over ACPX as named, resumable specialist sessions. The thesis lives in the verify lane: agents don't grade themselves. Dike judges a frozen contract on a different model and returns PASS / FAIL / UNVERIFIED. And Pantheon uses its own trace evidence to improve the loop. The 34% finding is exactly that: observe, diagnose, fix, all on the same harness.">
+    <div class="pad">
+      <div class="eyebrow">Pillars 2&ndash;8 · run · verify · improve</div>
+      <h2 class="head sm">Pillars 2&ndash;8: an ACPX-enabled multi-agent implementation &amp; evaluation system</h2>
+      <div class="net">
+        <div class="retry">↺ FAIL / UNVERIFIED &rarr; fix &amp; retry</div>
+        <div class="lanes">
+          <div class="goal-pill">/goal</div>
+          <div class="lane-arrow">&rarr;</div>
+          <div class="lane orchestrate">
+            <h4>Orchestrate</h4>
+            <div class="agent"><div class="an">Athena <span class="mb">GPT-5.5</span></div><div class="ar">Primary builder-orchestrator</div></div>
+            <div class="agent"><div class="an">Zeus <span class="mb">GPT-5.5</span></div><div class="ar">Long-running orchestrator</div></div>
+            <div class="lane-note">Plan &amp; context: Oracle, Prometheus, Mnemosyne + research specialists (explore · analyzer · librarian)</div>
+          </div>
+          <div class="lane-arrow">&rarr;</div>
+          <div class="lane build">
+            <h4>Build</h4>
+            <div class="agent"><div class="an">Vulkanus <span class="mb">Sonnet 4.6</span></div><div class="ar">TDD implementer</div></div>
+            <div class="agent"><div class="an">Frontend-engineer <span class="mb">Gemini 3.1</span></div><div class="ar">UI implementation</div></div>
+            <div class="lane-note">Athena implements directly by default; delegates intentionally.</div>
+          </div>
+          <div class="lane-arrow">&rarr;</div>
+          <div class="lane verify">
+            <h4>Verify · different model</h4>
+            <div class="agent"><div class="an">Dike <span class="mb">Opus 4.8</span></div><div class="ar">Done-Contract judge &rarr; PASS / FAIL / UNVERIFIED</div></div>
+            <div class="agent"><div class="an">Argus <span class="mb">Opus 4.8</span></div><div class="ar">Adversarial review &rarr; 7 hunters in parallel</div></div>
+          </div>
+        </div>
+        <div class="learn-bar">
+          <span class="lk">↻ Learn</span>
+          <span class="lt"><b>Meta-reviewer</b> <span class="mb">Opus 4.8</span> runs evidence-gated AHE: it mines LangWatch traces into harness fixes, fed back into the loop. <span style="color:var(--faint);">(Plus semantic memory, Projects Wiki &amp; Beads carrying context across runs.)</span></span>
+        </div>
+        <div class="learn-bar payoff">
+          <span class="lk">↺ Payoff</span>
+          <span class="lt"><b>~34% of delegated wall-clock</b> (analyzed corpus) was lost to failed / timed-out runs. Traces exposed the causes (turn limits, timeouts, session/model issues) and drove the <b>session-first, resume-don't-restart</b> redesign.</span>
+        </div>
+        <div class="net-foot">All delegation runs over ACPX: named, resumable sessions, specialist routing, enforced in code. Evaluators always run on a different model than the implementer.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 6: GET STARTED ===================== -->
+  <section class="slide gradient" data-notes="Final claim. The biggest lift is building trust with agents inside your org before you let them run overnight. Setup is a one-line install: authenticate Claude, run the install script, launch pantheon, then /login the remaining providers, /define-project to pin truth conditions, and /goal to run the loop. Truth Conditions + Pantheon are the foundation, with enforced pre-commit hooks, consistent CI/CD, and humans at the gates that matter. Don't trust the agent. Trust the loop.">
+    <div class="pad" style="display:flex; flex-direction:column; justify-content:center;">
+      <div class="eyebrow">Get started · long-running loops, the Neno way</div>
+      <h2 class="head sm" style="max-width:1040px;">The biggest lift is building trust with agents before you let them run overnight.</h2>
+      <div class="split" style="margin-top:22px; gap:40px; align-items:flex-start;">
+        <div class="left" style="flex:1.05;">
+          <div class="term">
+            <div class="dots"><i></i><i></i><i></i></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">claude auth login</span> <span class="cmt"># Claude / Anthropic auth</span></div>
+            <div class="line" style="margin-top:9px;"><span class="prompt">$</span> <span class="arg">curl -fsSL https://pantheon.viche.ai/install.sh | bash</span></div>
+            <div class="line"><span class="cmt">&nbsp;&nbsp;&nbsp;# clones repo, installs deps, registers the Pi package, runs init</span></div>
+            <div class="line" style="margin-top:9px;"><span class="prompt">$</span> <span class="cmd">pantheon</span> <span class="cmt"># launch Pi with Athena as default primary</span></div>
+            <div class="line" style="margin-top:14px;"><span class="cmt"># then, inside the pantheon session:</span></div>
+            <div class="line"><span class="prompt">&rsaquo;</span> <span class="cmd">/login</span> <span class="cmt"># authenticate openai-codex + gemini providers</span></div>
+            <div class="line"><span class="prompt">&rsaquo;</span> <span class="cmd">/define-project</span> <span class="cmt"># pin truth conditions into Linear</span></div>
+            <div class="line"><span class="prompt">&rsaquo;</span> <span class="cmd">/goal</span> <span class="arg">"implement [Linear project] until Dike approves the truth conditions"</span></div>
+          </div>
+          <div style="font-size:13px; color:rgba(12,12,18,0.55); margin-top:12px; font-family:var(--mono);">Requires Bun, Pi, acpx &amp; Git on your PATH.</div>
+        </div>
+        <div class="right" style="flex:0.95;">
+          <div class="sub" style="margin-top:0; font-size:18px;">It works as a foundation as long as you have:</div>
+          <div class="req" style="margin-left:0; margin-top:16px; gap:12px;">
+            <div class="ri" style="font-size:18px;">Enforced pre-commit hooks: tests, linting, integration &amp; DB-schema verification</div>
+            <div class="ri" style="font-size:18px;">Consistent CI/CD pipelines to catch errors at deploy time</div>
+            <div class="ri" style="font-size:18px;">Humans at the gates that matter</div>
+          </div>
+        </div>
+      </div>
+      <div class="signoff" style="text-align:left; margin-top:30px;">Don't trust the agent. <span class="b">Trust the loop.</span></div>
+    </div>
+  </section>
+
+</div>
+
+<div id="counter">1 / 7</div>
+<div id="hint">← → navigate · S notes · F fullscreen</div>
+<div id="notes"></div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const notesEl = document.getElementById('notes');
+  let i = 0, notesOn = false;
+  function scale() {
+    const k = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    slides.forEach(s => { s.style.transform = `scale(${k})`; s.style.transformOrigin = 'center center'; });
+  }
+  function show(n) {
+    i = (n + slides.length) % slides.length;
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    if (notesOn) renderNotes();
+  }
+  function renderNotes() {
+    notesEl.innerHTML = '<b>Speaker note · ' + (i + 1) + '</b> &nbsp; ' + (slides[i].getAttribute('data-notes') || '');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { show(i + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); e.preventDefault(); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key.toLowerCase() === 's') { notesOn = !notesOn; notesEl.classList.toggle('show', notesOn); if (notesOn) renderNotes(); }
+    else if (e.key.toLowerCase() === 'f') { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  document.getElementById('stage').addEventListener('click', e => { if (e.clientX > window.innerWidth / 2) show(i + 1); else show(i - 1); });
+  window.addEventListener('resize', scale);
+  scale(); show(0);
+</script>
+</body>
+</html>

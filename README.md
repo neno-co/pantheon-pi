@@ -19,17 +19,18 @@ It's an installable Pi **package**, not a wrapper. `pantheon` launches your exis
 
 ---
 
-## The seven pillars
+## The eight pillars
 
 Pantheon is opinionated about what makes agent loops trustworthy:
 
-1. **Long-running agents** - resumable work over real tasks, not one-shot prompts.
-2. **Independent evaluators** - Dike/Argus grade evidence instead of letting builders self-certify.
-3. **Trace-native observability** - every main turn, tool call, and delegation becomes inspectable telemetry.
-4. **Semantic experience memory** - prior runs are searchable by text and meaning.
-5. **[LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (by Andrij Karpathy) as company brain** - durable decisions, research, and handoffs live outside chat.
-6. **Beads as shared work graph** - task/dependency state survives across sessions and agents.
-7. **Evidence-gated AHE** - trace evidence drives harness changes only after eval/review.
+1. **Truth Conditions Framework** - Feature-complete descriptions of the system after the work has completed.
+2. **Long-running agents** - resumable work over real tasks, not one-shot prompts.
+3. **Independent evaluators** - Dike/Argus grade evidence instead of letting builders self-certify.
+4. **Trace-native observability** - every main turn, tool call, and delegation becomes inspectable telemetry.
+5. **Semantic experience memory** - prior runs are searchable by text and meaning.
+6. **[LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) (by Andrij Karpathy) as company brain** - durable decisions, research, and handoffs live outside chat.
+7. **Beads as shared work graph** - task/dependency state survives across sessions and agents.
+8. **Evidence-gated AHE** - trace evidence drives harness changes only after eval/review.
 
 The Projects Wiki / LLM Wiki is a first-class runtime surface: Pantheon ships Obsidian, Projects Wiki initialization, and research-filing skills so durable context can be created, searched, linked, and preserved as part of the agent loop.
 

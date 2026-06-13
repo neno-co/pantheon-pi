@@ -35,7 +35,11 @@ const expectedManagedAgents = [
 	"zeus",
 ];
 
-const expectedPiExtensions = ["./src/extension/index.ts", "./node_modules/pi-lsp/extensions/pi-lsp/index.ts"];
+const expectedPiExtensions = [
+	"./src/extension/index.ts",
+	"./node_modules/pi-lsp/extensions/pi-lsp/index.ts",
+	"./node_modules/pi-goal/.pi/extensions/pi-goal/index.ts",
+];
 
 const expectedPackagedSkills = [
 	"./skills/mlops/observability/langwatch-acpx",

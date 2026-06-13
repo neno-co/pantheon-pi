@@ -1,6 +1,23 @@
 # Pantheon
 
-**A native loop stack for software-engineering agents: specialist delegation, independent evaluation, trace-native observability, and evidence-gated harness improvement based on Pi-agent.**
+**Pantheon is a full Agentic Harness Engineering setup for long-running software-engineering agents.** A fleet of 26 specialists where every prompt, skill, and agent is independently evaluated, versioned, and tracked — so you hand the system a goal and trust it across work that runs for hours or days. "Done" is graded by a *different* agent on a *different* model, never self-declared.
+
+It's an installable Pi **package**, not a wrapper. `pantheon` launches your existing Pi binary with a specialist primary, a delegation tool, a live Subagent UI, a persistent `/goal` loop, and full OpenTelemetry telemetry. Plain `pi` stays vanilla.
+
+---
+
+### Judge's cut (the 60-second version)
+
+- **What it is** — an installable Pi package that turns one coding agent into an evaluated, observable fleet: a builder, independent evaluators, hunters, and researchers, routed over a protocol (`acpx`) to the right model for each job.
+- **Why it's beyond a basic loop** — the harness *itself* is the product. Prompts, tools, routing, skills, evals, and review gates are versioned and measured; a meta-improvement loop turns trace evidence into human-approved harness changes. Grounded in current AHE research ([Agentic Harness Engineering](https://arxiv.org/abs/2604.25850), [Meta-Harness](https://arxiv.org/abs/2603.28052)) — applied, not just cited.
+- **Proof it works** — we ran a single agentic session for **over a day** and had it deliver. And observability paid for itself: **~34% of delegated wall-clock was being lost to failed/timed-out runs** (surfaced in LangWatch traces, diagnosed via a 7-class failure taxonomy, fixed by a resume-not-restart redesign). The numbers are a *byproduct* of the setup — the system that records the loop is the one that improves it.
+- **Key architectural bet** — `acpx`, a delegation *protocol*, lets us launch any harness, any agent, any model, anywhere (local, VM, remote). The fleet isn't wired to one machine or one provider.
+- **Demo path** — `/define-project` → `/goal "…"` → watch the Subagent widget run the fleet live → `pantheon telemetry similar "…"` to query what happened. See [Watch the fleet work, live](#watch-the-fleet-work-live).
+- **Team** — Ihor & Joel (Neno). This is our production engineering harness, distilled.
+
+> **Judges:** point your own coding agent at this repo and ask it to summarize the harness. The README is written to be read by an agent as well as a human — let Claude Code / Cursor / Codex crawl it and give you the bigger picture in your own loop. That round-trip *is* the pitch: a harness legible enough that another agent can explain it back to you.
+
+---
 
 ## The seven pillars
 
@@ -185,9 +202,9 @@ Full command set: `pantheon telemetry <runs|slow|trace|session-file|search|simil
 
 ## The payoff: the 34% story
 
-Observability isn't decoration — it changed the design. Measured on our **own delegated-run telemetry corpus/window**, roughly **34% of delegated wall-clock was being lost to failed or timed-out runs.** The local telemetry index surfaced it; the 7-class failure taxonomy in the traces exposed the causes (turn limits, timeouts, session/model issues); the fix was the **session-first, resume-not-restart** redesign now built into `acpx` — a run that hits its turn limit pauses as a resumable "needs attention" handoff instead of dying.
+Observability isn't decoration — it changed the design. Measured on our delegated-run telemetry corpus, **~34% of delegated wall-clock was being lost to failed or timed-out runs.** The local telemetry index surfaced it; the 7-class failure taxonomy in the traces exposed the causes (turn limits, timeouts, session/model issues); the fix was the **session-first, resume-not-restart** redesign now built into `acpx` — a run that hits its turn limit pauses as a resumable "needs attention" handoff instead of dying.
 
-Observe → diagnose → fix. The harness that records the loop is the same one that let us improve it. (This is a measurement of our own analyzed corpus/window, not a universal benchmark or a post-fix speedup claim.)
+Observe → diagnose → fix. The harness that records the loop is the same one that let us improve it. This isn't a one-off: the same loop lets us point the **meta-reviewer** at the trace store to find slow sessions and optimize them. (Figure is from our own analyzed corpus, not a universal benchmark.)
 
 ## Agentic Harness Engineering, not prompt tweaking
 
@@ -212,6 +229,12 @@ That is why this repo carries versioned prompts/manifests, telemetry indexing, f
 ## How it fits — vs a single tool loop
 
 Pantheon keeps your plain Pi session and wraps four things around it: a fleet you can route to, independent evaluators that grade the result, a trace + telemetry record of every run, and an AHE loop for improving the harness. The point isn't more agents — it's the right specialist per task, an outside check on "done," and a loop you can actually inspect, evaluate, and improve.
+
+## Collaboration — two teams
+
+**The humans.** Pantheon is built by **Ihor** and **Joel** at **Neno**, where this harness runs in production. What's in this repo is that engineering setup distilled: Joel owns the architecture narrative and the demo; Ihor owns the implementation and fields Q&A. We split the way the agents do — one person frames "done," the other builds toward it.
+
+**The fleet as a team.** The deeper collaboration story is structural: Pantheon enforces a *division of responsibilities across agents*. The builder (`athena`/`zeus`) never grades its own work — an adversarial reviewer (`argus`) and an independent grader (`dike`) on different models must sign off first, hunters run targeted risk sweeps, and researchers feed context in. Different skills, different models, different perspectives, combined through `acpx` routing to reach an outcome no single loop would.
 
 ## Commands
 

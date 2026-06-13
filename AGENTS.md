@@ -29,6 +29,18 @@ When adding, removing, or renaming agents, skills, packaged files, or launchers,
 - Use the repo tooling instead of embedding style rules in prose; run `bun run lint` when style may be affected.
 - Use live evals only when the required local credentials and agent tools are intentionally configured.
 
+## Agentic Harness Engineering (AHE)
+
+The harness is everything that shapes agent behavior: prompts, tools, middleware, memory, skills, and config. Changing any of these is an engineering change, not a copy edit; it requires evidence.
+
+Every agent-behavior change must:
+
+- State an evidence-backed hypothesis — cite the trace, eval, or failure that motivates it.
+- Predict the expected fix and regression risks before editing.
+- Stay isolated: one variable per change, so the effect is attributable.
+- Validate against an eval or holdout, not only a happy-path run.
+- Leave a decision record in the commit/PR, linked to the evidence when possible.
+
 ## Validation
 
 Use the narrowest relevant test while iterating. Before landing durable code or package changes, run:
@@ -38,4 +50,4 @@ bun run validate
 npm pack --dry-run
 ```
 
-For prompt, routing, manifest, or governance changes, include rationale and update tests/evals when behavior changes.
+For prompt, routing, manifest, governance, or agent-behavior changes, include rationale, follow the AHE gate above, and update tests/evals when behavior changes.

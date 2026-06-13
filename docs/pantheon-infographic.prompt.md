@@ -1,88 +1,222 @@
-# Pantheon infographic image-generation prompt
+Create a professional infographic following these specifications:
 
-Create a wide README hero infographic as a crisp technical schematic, aspect ratio 16:9, suitable for GitHub README embedding. Output should be a clean, high-contrast SVG/PNG-style image that remains readable around 700px wide.
+## Image Specifications
 
-## Style
+- **Type**: Infographic
+- **Layout**: structural-breakdown
+- **Style**: technical-schematic
+- **Aspect Ratio**: 16:9
+- **Language**: English
 
-Technical schematic / blueprint interface. Dark navy background, subtle grid, thin connector lines, glowing but restrained accents. Engineering audience, hackathon-demo tone. Use only a few type sizes. No photorealism, no cartoons, no generic robot mascots.
+## Core Principles
 
-## Core message
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
 
-Pantheon is a communication protocol between specialized agents: Athena handles short-running edit/validate/ship work by default; Zeus handles long-running implementation loops; independent evaluators Dike and Argus grade done; AHE uses trace evidence to improve the harness after eval/review.
+## Text Requirements
 
-Do not invent metrics. Do not claim autonomous self-improvement. AHE must read as evidence-gated and human-reviewed.
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+- Preserve all command text exactly where specified
+- This is for a GitHub README hero, so all text must remain legible when scaled down
 
-## Layout
+## Layout Guidelines
 
-Wide 1600×900 composition.
+# structural-breakdown
 
-### Header
+Internal structure visualization with labeled parts or layers.
 
-Title: `Pantheon — Agent Delegation Map`
+## Structure
 
-Subtitle: `Run Athena by default, route long-running implementation to Zeus, and let independent evaluators grade “done.”`
+- Central subject (object, system, body)
+- Parts or layers clearly shown
+- Labels with callout lines
+- Exploded or cutaway view
+- Optional zoomed detail sections
 
-Small terminal capsule on the right:
+## Variants
+
+Use a polished exploded-system variant: two large orchestration modules side-by-side, a central usage strip, and a lower feedback-loop module.
+
+## Visual Elements
+
+- Main subject clearly rendered
+- Callout lines with dots/arrows
+- Label boxes at endpoints
+- Numbered parts optionally
+- Layer boundaries or separation
+- Title at top
+- Part/layer labels at callouts
+- Brief descriptions in boxes
+- Legend for numbered systems
+
+## Style Guidelines
+
+# technical-schematic
+
+Technical diagrams with engineering precision and clean geometry.
+
+## Color Palette
+
+- Primary: Blues (#2563EB), teals, grays, white lines
+- Background: Deep blue (#1E3A5F), white, or light gray with grid
+- Accents: Amber highlights (#F59E0B), cyan callouts
+
+## Variant
+
+Use the Blueprint variant with modern product polish: dark navy canvas, faint grid, glowing edge highlights, clean vector cards, precise arrows, and readable terminal callouts.
+
+## Visual Elements
+
+- Geometric precision throughout
+- Grid pattern or isometric angle
+- Dimension lines and measurements
+- Technical symbols and annotations
+- Clean vector shapes
+- Consistent stroke weights
+
+## Typography
+
+- Technical stencil or clean sans-serif
+- All-caps labels for module headings
+- Measurement-style annotations sparingly
+- Floating labels for specialist cards
+
+---
+
+Generate the infographic based on the content below:
+
+# Pantheon — Agent Delegation Map
+
+## Overall composition
+
+Create a polished wide 16:9 README hero. Do NOT make it look like a plain code-generated SVG. It should look like a modern technical product infographic: depth, hierarchy, glow, spacing, alignment, and visual polish.
+
+Top title:
+
+**Pantheon — Agent Delegation Map**
+
+Subtitle:
+
+**Athena is the default primary. Zeus runs long implementation loops. Dike and Argus grade “done.”**
+
+Small terminal capsule:
 
 ```text
 $ pantheon                 default: Athena
-$ pantheon --agent zeus    long-running loop
+$ pantheon --agent zeus    long-running implementation
 ```
 
-### Upper half: two side-by-side structural-breakdown panels
+## Upper zone: two side-by-side modules
 
-Panel A heading: `ATHENA · short-running work`
-Small caption: `edit in place → validate → ship`
+### Left module: ATHENA
+
+Heading:
+
+**ATHENA · short-running work**
+
+Subhead:
+
+**edit in place → validate → ship**
 
 Central node:
-- `Athena`
-- `primary builder-orchestrator`
 
-Five specialist nodes beneath it, connected by arrows:
-- `Mnemosyne` — `memory / archaeology`; sublabel `locator · analyzer · librarian`
-- `Prometheus` — `planning / strategy`; sublabel `Oracle counsel`
-- `Vulkanus` — `TDD implementation`; sublabel `Oracle on blockers`
-- `Dike` — `verifier / judge`; sublabel `truth conditions`
-- `Argus` — `adversarial review`; sublabel `hunter reviewers`
+- **Athena**
+- primary builder-orchestrator
 
-Panel B heading: `ZEUS · long-running implementation`
-Small caption: `delegate → resume → gate`
+Specialist cards connected beneath Athena:
+
+- **Mnemosyne** — memory
+- **Prometheus** — planning
+- **Vulkanus** — implementation
+
+Then show a visually separated evaluator gate column, not just more cards:
+
+- **Dike** — contract gate
+- **Argus** — adversarial gate
+
+Make Dike and Argus visibly independent evaluator gates using shield/stamp/gate motifs, a distinct outline, and a label: **must PASS before done**.
+
+### Right module: ZEUS
+
+Heading:
+
+**ZEUS · long-running implementation**
+
+Subhead:
+
+**delegate → resume → gate**
 
 Central node:
-- `Zeus`
-- `resumable orchestrator`
 
-Five specialist nodes beneath it, connected by arrows:
-- `Mnemosyne` — `system context`; sublabel `prior decisions`
-- `Prometheus` — `phase plan`; sublabel `sequence work`
-- `Vulkanus` — `long task`; sublabel `implementation`
-- `Dike` — `contract gate`; sublabel `approve / fail`
-- `Argus` — `final review`; sublabel `hunters fan out`
+- **Zeus**
+- resumable orchestrator
 
-Use identical specialist roster in both panels to show the contrast: same fleet, different orchestration mode.
+Specialist cards connected beneath Zeus:
 
-### Middle usage strip
+- **Mnemosyne** — context
+- **Prometheus** — phase plan
+- **Vulkanus** — long task
 
-Heading: `Use it as an engineering loop, not a chat trick`
+Then show a visually separated evaluator gate column, not just more cards:
 
-Show a left-to-right flow:
+- **Dike** — contract gate
+- **Argus** — final review gate
+
+Make the viewer understand: same fleet, different orchestration mode; Dike and Argus are independent gates.
+
+## Middle usage strip: the concrete engineering loop
+
+Heading:
+
+**Use it as an engineering loop**
+
+Make this the clearest concrete usage example in the image. Use a large, high-contrast terminal card with generous padding and large monospaced text. Command text must be crisp and readable when the full image is scaled to 800px wide.
+
+Left card:
 
 ```text
-/define-project → project + truth conditions live in Linear
+/define-project
 ```
 
-arrow to:
+Small label beside it:
 
 ```text
-/goal implement the functionality outlined in [Linear project link]
-until Dike approves the contract is implemented and the truth conditions are met
+Linear project + truth conditions
 ```
 
-### Lower panel: AHE loop
+Arrow to a wide terminal card. Render this exact command text, split into three large readable lines:
 
-Heading: `AHE · evidence-gated harness evolution`
+```text
+/goal implement the functionality
+outlined in the Linear project
+until Dike approves contract + truth conditions
+```
 
-Caption: `Traces inform changes to prompts, tools, manifests, skills, evals, and routing — then review gates promotion.`
+End with a strong approval stamp/card:
+
+**DIKE APPROVES**
+
+Tiny caption under stamp:
+
+**contract + truth conditions met**
+
+## Lower panel: AHE loop
+
+Heading:
+
+**AHE · evidence-gated harness evolution**
+
+Caption:
+
+**Traces inform changes to prompts, tools, manifests, skills, evals, and routing — then review gates promotion.**
 
 Four-stage loop with arrows:
 
@@ -90,30 +224,94 @@ Four-stage loop with arrows:
 trace → eval → harness update → review
 ```
 
-Micro-labels:
-- trace: `spans / run IDs`
-- eval: `Dike / Argus`
-- harness update: `session-first, telemetry`
-- review: `human gate`
+Micro labels:
 
-### Footer chips
+- trace: spans / run IDs
+- eval: Dike / Argus
+- harness update: prompts · tools · manifests · skills · evals · routing
+- review: human gate
 
-Short pillar chips:
+Important: do NOT call this autonomous self-improvement. Show it as evidence-gated and human-reviewed.
+
+## Footer chips: seven pillars, shortened
+
+Show as compact pill chips:
 
 ```text
-subagents · delegation · telemetry/proofs · AHE · Projects Wiki · LLM Wiki · acpx
+long runs · evaluators · trace proof · memory · Projects Wiki · work graph · AHE
 ```
 
 Footer line:
 
-```text
-A communication protocol between specialized agents, plus an evidence loop for improving the protocol.
-```
+**A communication protocol between specialized agents, plus an evidence loop for improving the protocol.**
 
-## Constraints
+## Design quality requirements
 
-- Must be README-ready and legible at reduced size.
-- Do not include the old “ask a specialist” examples.
-- Do not show fake dashboards, fake metrics, or performance percentages.
-- Make Dike and Argus visually stand out as independent evaluators/gates, but keep all five specialists aligned.
-- Prefer clean diagrammatic boxes and arrows over decorative illustration.
+- Must look like a polished image-generation infographic, not a hand-coded wireframe.
+- Re-render as a high-resolution README hero; prioritize legibility over density.
+- All command text and card labels must remain crisply legible when the image is scaled to 800px wide.
+- Use large fonts; never render tiny body text or dense microtext.
+- Keep the text readable; use fewer words per node.
+- Use strong visual hierarchy: title → launch modes → Athena/Zeus comparison → usage flow → AHE loop → pillar chips.
+- Use technical schematic aesthetics: dark blueprint background, subtle grid, crisp vector edges, cyan Athena lane, amber Zeus lane, green AHE loop.
+- Avoid clutter; if space is tight, keep specialist names and role tags but shrink subordinate micro-callouts.
+- No fake metrics. No percentages. No speedup claims.
+- No old “ask oracle / ask specialist” examples.
+
+Text labels (in English):
+
+- Pantheon — Agent Delegation Map
+- Athena is the default primary. Zeus runs long implementation loops. Dike and Argus grade “done.”
+- $ pantheon
+- default: Athena
+- $ pantheon --agent zeus
+- long-running implementation
+- ATHENA · short-running work
+- edit in place → validate → ship
+- Athena
+- primary builder-orchestrator
+- ZEUS · long-running implementation
+- delegate → resume → gate
+- Zeus
+- resumable orchestrator
+- Mnemosyne
+- memory / archaeology
+- system context
+- Prometheus
+- planning / strategy
+- phase plan
+- Vulkanus
+- TDD implementation
+- long task
+- Dike
+- verifier / judge
+- contract gate
+- Argus
+- adversarial review
+- final review
+- must PASS before done
+- Use it as an engineering loop
+- /define-project
+- Linear project + truth conditions
+- /goal implement the functionality
+- outlined in the Linear project
+- until Dike approves contract + truth conditions
+- DIKE APPROVES
+- contract + truth conditions met
+- AHE · evidence-gated harness evolution
+- trace
+- spans / run IDs
+- eval
+- Dike / Argus
+- harness update
+- prompts · tools · manifests · skills · evals · routing
+- review
+- human gate
+- long runs
+- evaluators
+- trace proof
+- memory
+- Projects Wiki
+- work graph
+- AHE
+- A communication protocol between specialized agents, plus an evidence loop for improving the protocol.

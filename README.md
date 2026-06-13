@@ -21,7 +21,7 @@ The Projects Wiki / LLM Wiki is a first-class runtime surface: Pantheon ships Ob
 [![Built on Pi](https://img.shields.io/badge/built%20on-Pi-5b21b6.svg)](https://github.com/earendil-works)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178c6.svg)](https://www.typescriptlang.org/)
 
-![Pantheon agent delegation map](docs/pantheon-infographic.svg)
+![Pantheon agent delegation map](docs/pantheon-infographic.png)
 
 > Infographic source prompt: [`docs/pantheon-infographic.prompt.md`](docs/pantheon-infographic.prompt.md).
 

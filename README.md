@@ -14,6 +14,8 @@ Pantheon is opinionated about what makes agent loops trustworthy:
 6. **Beads as shared work graph** — task/dependency state survives across sessions and agents.
 7. **Evidence-gated AHE** — trace evidence drives harness changes only after eval/review.
 
+The Projects Wiki / LLM Wiki is a first-class runtime surface: Pantheon ships Obsidian, Projects Wiki initialization, and research-filing skills so durable context can be created, searched, linked, and preserved as part of the agent loop.
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Built with Bun](https://img.shields.io/badge/built%20with-Bun-000000.svg)](https://bun.sh)
 [![Built on Pi](https://img.shields.io/badge/built%20on-Pi-5b21b6.svg)](https://github.com/earendil-works)

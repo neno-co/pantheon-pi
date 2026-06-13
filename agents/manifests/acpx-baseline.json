@@ -161,6 +161,15 @@
 			"model": "claude-opus-4-5",
 			"notes": "Pantheon-owned Claude Code route: claude-opus-4-5 with agents/prompts/mnemosyne.md injected via acpx --append-system-prompt."
 		},
+		"nemotron": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/nemotron", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/nemotron.md",
+			"defaultPermissions": "approve-reads",
+			"model": "nebius/nvidia/nemotron-3-super-120b-a12b",
+			"notes": "Experimental Nebius Token Factory route for NVIDIA Nemotron. Requires user-local pi models.json provider registration and environment-sourced Nebius credentials; no secrets are packaged. See https://github.com/nebius/token-factory-cookbook/tree/main/models/nemotron."
+		},
 		"oracle": {
 			"command": "npx",
 			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],

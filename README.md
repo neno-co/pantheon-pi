@@ -1,6 +1,6 @@
 # Pantheon
 
-**Pantheon is a full Agentic Harness Engineering setup for long-running software-engineering agents.** A fleet of 26 specialists where every prompt, skill, and agent is independently evaluated, versioned, and tracked - so you hand the system a goal and trust it across work that runs for hours or days. "Done" is graded by a *different* agent on a *different* model, never self-declared.
+**Pantheon is a full Agentic Harness Engineering setup for long-running software-engineering agents.** A fleet of 27 specialists where every prompt, skill, and agent is independently evaluated, versioned, and tracked - so you hand the system a goal and trust it across work that runs for hours or days. "Done" is graded by a *different* agent on a *different* model, never self-declared.
 
 It's an installable Pi **package**, not a wrapper. `pantheon` launches your existing Pi binary with a specialist primary, a delegation tool, a live Subagent UI, a persistent `/goal` loop, and full OpenTelemetry telemetry. Plain `pi` stays vanilla.
 
@@ -63,7 +63,7 @@ Then use `/login` to login for openai-codex and gemini providers.
 If any provider is missing or unauthenticated, only the agents backed by the remaining providers will work reliably.
 
 ```bash
-curl -fsSL https://pantheon.viche.ai/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/neno-co/pantheon-pi/main/install.sh | bash
 pantheon
 ```
 
@@ -89,7 +89,7 @@ Installer overrides:
 PANTHEON_REPO_URL=https://github.com/neno-co/pantheon-pi.git \
 PANTHEON_INSTALL_DIR=~/.pantheon/pantheon-pi \
 PANTHEON_INSTALL_BRANCH=main \
-  curl -fsSL https://pantheon.viche.ai/install.sh | bash
+  curl -fsSL https://raw.githubusercontent.com/neno-co/pantheon-pi/main/install.sh | bash
 ```
 
 </details>
@@ -126,9 +126,9 @@ A passive **Subagent widget** renders every delegated run inline in your termina
 └────────────────────────────────────────────────────────────┘
 ```
 
-## The fleet - 26 specialists
+## The fleet - 27 specialists
 
-One primary agent, many focused experts. The package ships **26 specialist agents** - each a versioned prompt plus a packaged launcher under `agents/`, wired into `acpx` routing - and the primary delegates to them by name.
+One primary agent, many focused experts. The package ships **27 specialist agents** - each a versioned prompt plus a packaged launcher under `agents/`, wired into `acpx` routing - and the primary delegates to them by name.
 
 | Group | Agents | Role |
 | --- | --- | --- |
@@ -137,6 +137,7 @@ One primary agent, many focused experts. The package ships **26 specialist agent
 | **Independent evaluation** | `dike` (Done-Contract grading), `argus` (adversarial review), `meta-reviewer` (telemetry-backed after-action) | Grade "done" - independently of who built it |
 | **Hunters** | `hunter-security`, `hunter-silent-failure`, `hunter-type-design`, `hunter-test-coverage`, `hunter-comments`, `hunter-code-review`, `hunter-simplifier` | Targeted code-quality and risk sweeps |
 | **Research / codebase** | `mnemosyne`, `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, `explore`, `thoughts-locator`, `thoughts-analyzer`, `librarian` | Find, read, and explain code and notes |
+| **Experimental models** | `nemotron` | Try NVIDIA Nemotron through a user-local Nebius Token Factory provider |
 | **Docs / language** | `document-writer`, `translator` | Write documentation; translate |
 
 ## The right model for each role
@@ -151,8 +152,39 @@ Pantheon is multi-provider on purpose. Judgment-heavy work runs on stronger, cos
 | Analysis & exploration | Claude Sonnet 4.6 |
 | Docs - `document-writer` | Claude Sonnet 4.5 |
 | Cheap, fast lookups - `codebase-locator`, `codebase-pattern-finder`, `thoughts-locator` | Gemini 3 Flash |
+| Experimental - `nemotron` | Nebius Token Factory / NVIDIA Nemotron (requires local `nebius` model config) |
 
 Full routing - including a few planning and memory roles that run on other Claude Opus tiers - lives in `agents/manifests/acpx-baseline.json`.
+
+### Optional: enable the experimental Nemotron route
+
+The `nemotron` agent is packaged, but its Nebius credentials and model registration are intentionally user-local. Add a `nebius` provider to `~/.pi/agent/models.json` and source the key from the environment:
+
+```json
+{
+  "providers": {
+    "nebius": {
+      "baseUrl": "https://api.tokenfactory.us-central1.nebius.com/v1/",
+      "api": "openai-completions",
+      "apiKey": "$NEBIUS_API_KEY",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
+      "models": [
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b",
+          "name": "NVIDIA Nemotron 3 Super 120B A12B (Nebius)",
+          "contextWindow": 128000,
+          "maxTokens": 8192
+        }
+      ]
+    }
+  }
+}
+```
+
+Then export `NEBIUS_API_KEY` in your shell and run the agent through Pantheon/acpx. Do not put literal API keys in package files, manifests, or committed config.
 
 ## Delegation transport: acpx
 

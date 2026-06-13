@@ -21,6 +21,7 @@ const requiredAgents = [
 	"hunter-type-design",
 	"librarian",
 	"mnemosyne",
+	"nemotron",
 	"oracle",
 	"prometheus",
 	"thoughts-analyzer",

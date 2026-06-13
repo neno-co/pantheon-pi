@@ -1,0 +1,245 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Pantheon agent delegation map</title>
+  <desc id="desc">A technical schematic showing Athena for short-running work, Zeus for long-running implementation, Dike and Argus as independent evaluators, and an AHE evidence loop from traces to evals to harness updates to review.</desc>
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#1f3b57" stroke-width="1" opacity="0.35"/>
+    </pattern>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d2438"/>
+      <stop offset="1" stop-color="#071521"/>
+    </linearGradient>
+    <linearGradient id="athena" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#56d6ff"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="zeus" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fb7185"/>
+    </linearGradient>
+    <linearGradient id="ahe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.2 0 0 0 0 0.8 0 0 0 0 1 0 0 0 0.35 0"/>
+      <feBlend in="SourceGraphic"/>
+    </filter>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#67e8f9"/>
+    </marker>
+    <marker id="arrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/>
+    </marker>
+    <style>
+      .bg { fill: #07111d; }
+      .grid { fill: url(#grid); }
+      .panel { fill: url(#panel); stroke: #31516f; stroke-width: 2; }
+      .thin { stroke: #31516f; stroke-width: 1.4; }
+      .blue { stroke: #67e8f9; }
+      .gold { stroke: #fbbf24; }
+      .green { stroke: #34d399; }
+      .text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #e6f4ff; }
+      .muted { fill: #9fb6ca; }
+      .dim { fill: #7890a4; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; fill: #d7f9ff; }
+      .title { font-size: 50px; font-weight: 800; letter-spacing: -1.2px; }
+      .subtitle { font-size: 22px; fill: #b8d8ee; }
+      .section { font-size: 22px; font-weight: 800; letter-spacing: 0.8px; }
+      .nodeTitle { font-size: 21px; font-weight: 800; }
+      .nodeSub { font-size: 15px; fill: #b8d8ee; }
+      .micro { font-size: 13px; fill: #91aabd; }
+      .chip { font-size: 15px; font-weight: 700; fill: #dff8ff; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1600" height="900"/>
+  <rect class="grid" width="1600" height="900" opacity="0.72"/>
+  <path d="M80 112 H1520" stroke="#31516f" stroke-width="1.5" stroke-dasharray="8 9" opacity="0.85"/>
+  <path d="M80 742 H1520" stroke="#31516f" stroke-width="1.5" stroke-dasharray="8 9" opacity="0.85"/>
+
+  <!-- Header -->
+  <text class="text title" x="80" y="72">Pantheon — Agent Delegation Map</text>
+  <text class="text subtitle" x="82" y="104">Run Athena by default, route long-running implementation to Zeus, and let independent evaluators grade “done.”</text>
+  <g transform="translate(1125 38)">
+    <rect x="0" y="0" width="395" height="66" rx="16" fill="#0a1f31" stroke="#31516f" stroke-width="1.5"/>
+    <text class="code" x="22" y="28" font-size="17">$ pantheon</text>
+    <text class="code" x="22" y="52" font-size="17">$ pantheon --agent zeus</text>
+    <text class="text micro" x="212" y="29">default: Athena</text>
+    <text class="text micro" x="212" y="53">long-running loop</text>
+  </g>
+
+  <!-- Panel A: Athena -->
+  <g transform="translate(80 142)">
+    <rect class="panel" width="700" height="365" rx="24"/>
+    <rect x="20" y="20" width="660" height="58" rx="16" fill="#0b2b40" stroke="url(#athena)" stroke-width="2" filter="url(#softGlow)"/>
+    <text class="text section" x="38" y="57">ATHENA · short-running work</text>
+    <text class="text micro" x="438" y="57">edit in place → validate → ship</text>
+
+    <rect x="218" y="102" width="264" height="70" rx="18" fill="#0d3048" stroke="#67e8f9" stroke-width="2"/>
+    <text class="text" x="350" y="132" text-anchor="middle" font-size="28" font-weight="850">Athena</text>
+    <text class="text nodeSub" x="350" y="155" text-anchor="middle">primary builder-orchestrator</text>
+
+    <path d="M350 172 V206" class="thin blue" marker-end="url(#arrowBlue)"/>
+    <path d="M140 206 H560" class="thin blue"/>
+    <path d="M140 206 V228" class="thin blue" marker-end="url(#arrowBlue)"/>
+    <path d="M245 206 V228" class="thin blue" marker-end="url(#arrowBlue)"/>
+    <path d="M350 206 V228" class="thin blue" marker-end="url(#arrowBlue)"/>
+    <path d="M455 206 V228" class="thin blue" marker-end="url(#arrowBlue)"/>
+    <path d="M560 206 V228" class="thin blue" marker-end="url(#arrowBlue)"/>
+
+    <g transform="translate(60 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#4d6f8d"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Mnemosyne</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">memory / archaeology</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">locator · analyzer · librarian</text>
+    </g>
+    <g transform="translate(165 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#4d6f8d"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Prometheus</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">planning / strategy</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">Oracle counsel</text>
+    </g>
+    <g transform="translate(270 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#4d6f8d"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Vulkanus</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">TDD implementation</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">Oracle on blockers</text>
+    </g>
+    <g transform="translate(375 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#4d6f8d"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Dike</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">verifier / judge</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">truth conditions</text>
+    </g>
+    <g transform="translate(480 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#4d6f8d"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Argus</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">adversarial review</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">hunter reviewers</text>
+    </g>
+  </g>
+
+  <!-- Panel B: Zeus -->
+  <g transform="translate(820 142)">
+    <rect class="panel" width="700" height="365" rx="24"/>
+    <rect x="20" y="20" width="660" height="58" rx="16" fill="#33240a" stroke="url(#zeus)" stroke-width="2" filter="url(#softGlow)"/>
+    <text class="text section" x="38" y="57">ZEUS · long-running implementation</text>
+    <text class="text micro" x="458" y="57">delegate → resume → gate</text>
+
+    <rect x="218" y="102" width="264" height="70" rx="18" fill="#35280d" stroke="#fbbf24" stroke-width="2"/>
+    <text class="text" x="350" y="132" text-anchor="middle" font-size="28" font-weight="850">Zeus</text>
+    <text class="text nodeSub" x="350" y="155" text-anchor="middle">resumable orchestrator</text>
+
+    <path d="M350 172 V206" class="thin gold" marker-end="url(#arrowGold)"/>
+    <path d="M140 206 H560" class="thin gold"/>
+    <path d="M140 206 V228" class="thin gold" marker-end="url(#arrowGold)"/>
+    <path d="M245 206 V228" class="thin gold" marker-end="url(#arrowGold)"/>
+    <path d="M350 206 V228" class="thin gold" marker-end="url(#arrowGold)"/>
+    <path d="M455 206 V228" class="thin gold" marker-end="url(#arrowGold)"/>
+    <path d="M560 206 V228" class="thin gold" marker-end="url(#arrowGold)"/>
+
+    <g transform="translate(60 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#665636"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Mnemosyne</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">system context</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">prior decisions</text>
+    </g>
+    <g transform="translate(165 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#665636"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Prometheus</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">phase plan</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">sequence work</text>
+    </g>
+    <g transform="translate(270 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#665636"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Vulkanus</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">long task</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">implementation</text>
+    </g>
+    <g transform="translate(375 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#665636"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Dike</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">contract gate</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">approve / fail</text>
+    </g>
+    <g transform="translate(480 230)">
+      <rect width="160" height="72" rx="14" fill="#102236" stroke="#665636"/>
+      <text class="text nodeTitle" x="80" y="29" text-anchor="middle">Argus</text>
+      <text class="text nodeSub" x="80" y="53" text-anchor="middle">final review</text>
+      <text class="text micro" x="80" y="93" text-anchor="middle">hunters fan out</text>
+    </g>
+  </g>
+
+  <!-- Usage strip -->
+  <g transform="translate(80 535)">
+    <rect width="1440" height="126" rx="22" fill="#091c2b" stroke="#31516f" stroke-width="2"/>
+    <text class="text section" x="28" y="38">Use it as an engineering loop, not a chat trick</text>
+    <g transform="translate(30 58)">
+      <rect width="395" height="42" rx="12" fill="#071521" stroke="#31516f"/>
+      <text class="code" x="18" y="27" font-size="18">/define-project</text>
+      <text class="text micro" x="172" y="27">→ project + truth conditions live in Linear</text>
+    </g>
+    <path d="M455 80 H520" class="thin blue" marker-end="url(#arrowBlue)"/>
+    <g transform="translate(540 48)">
+      <rect width="870" height="62" rx="14" fill="#071521" stroke="#31516f"/>
+      <text class="code" x="18" y="27" font-size="16">/goal implement the functionality outlined in [Linear project link]</text>
+      <text class="code" x="18" y="50" font-size="16">until Dike approves the contract is implemented and the truth conditions are met</text>
+    </g>
+  </g>
+
+  <!-- AHE Panel -->
+  <g transform="translate(80 684)">
+    <rect class="panel" width="1440" height="145" rx="24"/>
+    <text class="text section" x="30" y="42">AHE · evidence-gated harness evolution</text>
+    <text class="text micro" x="30" y="68">Traces inform changes to prompts, tools, manifests, skills, evals, and routing — then review gates promotion.</text>
+
+    <g transform="translate(455 28)">
+      <rect width="154" height="70" rx="16" fill="#0d2c28" stroke="#34d399" stroke-width="2"/>
+      <text class="text nodeTitle" x="77" y="30" text-anchor="middle">trace</text>
+      <text class="text nodeSub" x="77" y="53" text-anchor="middle">spans / run IDs</text>
+    </g>
+    <path d="M609 63 H684" class="thin green" marker-end="url(#arrowGreen)"/>
+    <g transform="translate(684 28)">
+      <rect width="154" height="70" rx="16" fill="#0d2c28" stroke="#34d399" stroke-width="2"/>
+      <text class="text nodeTitle" x="77" y="30" text-anchor="middle">eval</text>
+      <text class="text nodeSub" x="77" y="53" text-anchor="middle">Dike / Argus</text>
+    </g>
+    <path d="M838 63 H913" class="thin green" marker-end="url(#arrowGreen)"/>
+    <g transform="translate(913 28)">
+      <rect width="190" height="70" rx="16" fill="#0d2c28" stroke="#34d399" stroke-width="2"/>
+      <text class="text nodeTitle" x="95" y="30" text-anchor="middle">harness update</text>
+      <text class="text nodeSub" x="95" y="53" text-anchor="middle">session-first, telemetry</text>
+    </g>
+    <path d="M1103 63 H1178" class="thin green" marker-end="url(#arrowGreen)"/>
+    <g transform="translate(1178 28)">
+      <rect width="154" height="70" rx="16" fill="#0d2c28" stroke="#34d399" stroke-width="2"/>
+      <text class="text nodeTitle" x="77" y="30" text-anchor="middle">review</text>
+      <text class="text nodeSub" x="77" y="53" text-anchor="middle">human gate</text>
+    </g>
+    <path d="M1255 98 C1255 132 532 132 532 100" stroke="#34d399" stroke-width="1.6" stroke-dasharray="7 8" marker-end="url(#arrowGreen)" opacity="0.72"/>
+  </g>
+
+  <!-- Footer chips -->
+  <g transform="translate(80 854)">
+    <rect width="1440" height="1.5" fill="#31516f"/>
+    <text class="text chip" x="0" y="31">subagents</text>
+    <text class="text dim" x="92" y="31">·</text>
+    <text class="text chip" x="112" y="31">delegation</text>
+    <text class="text dim" x="207" y="31">·</text>
+    <text class="text chip" x="228" y="31">telemetry/proofs</text>
+    <text class="text dim" x="366" y="31">·</text>
+    <text class="text chip" x="386" y="31">AHE</text>
+    <text class="text dim" x="431" y="31">·</text>
+    <text class="text chip" x="452" y="31">Projects Wiki</text>
+    <text class="text dim" x="570" y="31">·</text>
+    <text class="text chip" x="590" y="31">LLM Wiki</text>
+    <text class="text dim" x="676" y="31">·</text>
+    <text class="text chip" x="696" y="31">acpx</text>
+    <text class="text muted" x="1440" y="31" text-anchor="end">A communication protocol between specialized agents, plus an evidence loop for improving the protocol.</text>
+  </g>
+</svg>

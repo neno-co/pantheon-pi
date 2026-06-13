@@ -21,15 +21,15 @@ The Projects Wiki / LLM Wiki is a first-class runtime surface: Pantheon ships Ob
 [![Built on Pi](https://img.shields.io/badge/built%20on-Pi-5b21b6.svg)](https://github.com/earendil-works)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178c6.svg)](https://www.typescriptlang.org/)
 
-![Pantheon running in Pi with live subagents](docs/pantheon-demo.gif)
+![Pantheon agent delegation map](docs/pantheon-infographic.svg)
 
-> Demo GIF placeholder: record Pantheon working in Pi and save it as `docs/pantheon-demo.gif`.
+> Infographic source prompt: [`docs/pantheon-infographic.prompt.md`](docs/pantheon-infographic.prompt.md).
 
 Most coding agents are a single tool loop: one model, one context, calling tools until it stops and **the same agent that did the work declares it done.** Pantheon composes more. It stacks the Loopcraft ladder for software engineering: a primary builder, specialist agents, long-running sessions, independent evaluators, eval gates, telemetry, and a meta-improvement loop that turns trace evidence into safer, human-approved harness changes.
 
 It's an installable Pi **package** not a replacement, not a wrapper. `pantheon` launches your existing Pi binary with a Pantheon agent as the default primary, registers the delegation tool and a live Subagent UI, bundles a persistent `/goal` loop, and adds telemetry. Plain `pi` stays vanilla.
 
-One line to install, then ask for a specialist by name or hand it a whole `/goal`. Every delegated run is graded by a *different* agent and recorded as an OpenTelemetry trace you can query later.
+One line to install, then run `pantheon` for Athena as your default primary or `pantheon --agent zeus` for long-running implementation. Define the project, freeze the truth conditions, and let independent evaluators grade the work against evidence recorded as OpenTelemetry traces.
 
 ## Installation
 
@@ -76,18 +76,20 @@ PANTHEON_INSTALL_BRANCH=main \
 
 </details>
 
-Inside the session, just ask for a specialist — the primary delegates for you:
+Use Pantheon as an engineering loop, not a chat trick:
 
-```text
-Ask oracle for architecture tradeoffs before I change this API.
-Have codebase-analyzer explain the routing flow.
-Run argus review on my current diff.
+```bash
+pantheon                 # launch Pi with Athena as the default primary
+pantheon --agent zeus    # launch the long-running implementation orchestrator
 ```
 
-Or hand it a whole objective and let it run:
+Define the project and truth conditions, then hand the implementation loop a durable objective:
 
 ```text
-/goal "Add rate limiting to the upload endpoint, with tests, and pass an argus review."
+/define-project → project + truth conditions live in Linear
+
+/goal implement the functionality outlined in [Linear project link]
+until Dike approves the contract is implemented and the truth conditions are met
 ```
 
 ## Watch the fleet work, live

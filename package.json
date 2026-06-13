@@ -1,0 +1,95 @@
+{
+	"name": "pantheon-pi",
+	"version": "1.0.0",
+	"description": "In-app subagents for Pi: delegate to a marketable specialist agent fleet through acpx.",
+	"license": "MIT",
+	"type": "module",
+	"private": false,
+	"keywords": [
+		"pi-package",
+		"pi",
+		"acpx",
+		"subagents",
+		"agent-orchestration",
+		"observability"
+	],
+	"bin": {
+		"pantheon": "./src/cli.ts"
+	},
+	"files": [
+		".env.langwatch.local.example",
+		"agents/bin",
+		"agents/manifests",
+		"agents/prompts",
+		"src/agents.ts",
+		"src/cli.ts",
+		"src/extension",
+		"src/install-check",
+		"src/langwatch",
+		"src/runner",
+		"src/workflow",
+		"src/telemetry",
+		"scripts/check-build.ts",
+		"scripts/check-install.ts",
+		"scripts/smoke",
+		"scripts/langwatch-local-health.ts",
+		"scripts/langwatch-local-probe.ts",
+		"scripts/langwatch-live-probe.ts",
+		"skills",
+		"README.md",
+		"CHANGELOG.md",
+		"SPEC.md",
+		"CONTRIBUTING.md",
+		"LICENSE",
+		"package.json"
+	],
+	"scripts": {
+		"build": "bun run scripts/check-build.ts",
+		"check:install": "bun run scripts/check-install.ts",
+		"smoke": "bun run check:install",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"test": "bun test",
+		"test:e2e": "bun run scripts/test-e2e.ts",
+		"eval": "bun run evals/scripts/eval.ts",
+		"eval:fixtures": "PANTHEON_EVAL_MODE=fixtures bun run evals/scripts/eval.ts",
+		"langwatch:local:health": "bun run scripts/langwatch-local-health.ts",
+		"langwatch:local:probe": "bun run scripts/langwatch-local-probe.ts",
+		"ahe:experiment": "bun run scripts/ahe-experiment.ts",
+		"validate": "bun run build && bun run check:install && bun run lint && bun run test",
+		"hooks:install": "bun run scripts/install-hooks.ts"
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-ai": "*",
+		"@earendil-works/pi-coding-agent": "*",
+		"@earendil-works/pi-tui": "*",
+		"typebox": "*"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.1.4",
+		"@types/bun": "latest"
+	},
+	"pi": {
+		"extensions": [
+			"./src/extension/index.ts",
+			"./node_modules/pi-lsp/extensions/pi-lsp/index.ts"
+		],
+		"prompts": [],
+		"skills": [
+			"./skills/mlops/observability/langwatch-acpx",
+			"./skills/pantheon-telemetry",
+			"./skills/pantheon-cli"
+		],
+		"themes": []
+	},
+	"dependencies": {
+		"@ast-grep/napi": "^0.42.3",
+		"@opentelemetry/api": "^1.9.1",
+		"@opentelemetry/core": "^2.7.1",
+		"@opentelemetry/exporter-trace-otlp-http": "^0.218.0",
+		"@opentelemetry/resources": "^2.7.1",
+		"@opentelemetry/sdk-trace-base": "^2.7.1",
+		"@opentelemetry/semantic-conventions": "^1.41.1",
+		"pi-lsp": "^0.1.7"
+	}
+}

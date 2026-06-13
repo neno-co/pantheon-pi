@@ -1,0 +1,8 @@
+{
+	"agents": {
+		"athena": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/athena", "npx", "-y", "pi-acp@latest"]
+		}
+	}
+}

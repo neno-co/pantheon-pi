@@ -1,0 +1,234 @@
+{
+	"schemaVersion": 1,
+	"source": "pi-native pantheon-pi packaged baseline; packaged agents use package-relative agents/bin scripts",
+	"defaults": {
+		"defaultAgent": "athena",
+		"defaultPermissions": "approve-all",
+		"runType": "session",
+		"ttlSeconds": 86400,
+		"maxTurnsPolicy": "Omit maxTurns for implementation/grading agents (vulkanus, dike, argus, prometheus); rely on timeoutSeconds. Low caps (<30) allowed only for scoped read-only lookups. No upper bound in the schema (removed). Prefer runType=session with a named sessionId (<bead-id>-<agent>-<purpose>) for all substantive work; reserve runType=exec for one-shot stateless lookups only."
+	},
+	"agents": {
+		"argus": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/argus.md",
+			"model": "claude-opus-4-8",
+			"notes": "Pantheon-owned Claude Code route: claude-opus-4-8 with agents/prompts/argus.md injected via acpx --append-system-prompt.",
+			"defaultPermissions": "approve-all"
+		},
+		"athena": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/athena", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/athena.md",
+			"model": "openai-codex/gpt-5.5"
+		},
+		"codebase-analyzer": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/codebase-analyzer.md",
+			"defaultPermissions": "approve-all",
+			"model": "claude-sonnet-4-6",
+			"notes": "Pantheon-owned Claude Code route: claude-sonnet-4-6 with agents/prompts/codebase-analyzer.md injected via acpx --append-system-prompt."
+		},
+		"codebase-locator": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/codebase-locator", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/codebase-locator.md",
+			"defaultPermissions": "approve-reads",
+			"model": "google/gemini-3-flash-preview"
+		},
+		"codebase-pattern-finder": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/codebase-pattern-finder", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/codebase-pattern-finder.md",
+			"defaultPermissions": "approve-reads",
+			"model": "google/gemini-3-flash-preview"
+		},
+		"dike": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/dike.md",
+			"model": "claude-opus-4-8",
+			"notes": "Pantheon-owned Claude Code route: claude-opus-4-8 with agents/prompts/dike.md injected via acpx --append-system-prompt. Reverted from Fable 5 after Anthropic removed that model for users.",
+			"defaultPermissions": "approve-all"
+		},
+		"document-writer": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/document-writer.md",
+			"model": "claude-sonnet-4-5",
+			"notes": "Pantheon-owned Claude Code route: claude-sonnet-4-5 with agents/prompts/document-writer.md injected via acpx --append-system-prompt.",
+			"defaultPermissions": "approve-all"
+		},
+		"explore": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/explore.md",
+			"defaultPermissions": "approve-all",
+			"model": "claude-sonnet-4-6",
+			"notes": "Pantheon-owned Claude Code route: claude-sonnet-4-6 with agents/prompts/explore.md injected via acpx --append-system-prompt."
+		},
+		"frontend-engineer": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/frontend-engineer", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/frontend-engineer.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"hunter-code-review": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/hunter-code-review", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/hunter-code-review.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"hunter-comments": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/hunter-comments", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/hunter-comments.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"hunter-security": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/hunter-security", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/hunter-security.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"hunter-silent-failure": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/hunter-silent-failure", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/hunter-silent-failure.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"hunter-simplifier": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/hunter-simplifier", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/hunter-simplifier.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"hunter-test-coverage": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/hunter-test-coverage", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/hunter-test-coverage.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"hunter-type-design": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/hunter-type-design", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/hunter-type-design.md",
+			"model": "google/gemini-3.1-pro-preview-customtools"
+		},
+		"librarian": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/librarian.md",
+			"defaultPermissions": "approve-all",
+			"model": "claude-sonnet-4-6",
+			"notes": "Pantheon-owned Claude Code route: claude-sonnet-4-6 with agents/prompts/librarian.md injected via acpx --append-system-prompt."
+		},
+		"meta-reviewer": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"model": "claude-opus-4-8",
+			"prompt": "agents/prompts/meta-reviewer.md",
+			"notes": "Pantheon-owned Claude Code route: claude-opus-4-8 with agents/prompts/meta-reviewer.md injected via acpx --append-system-prompt. Timeout 900s for telemetry-backed multi-delegation review workflow.",
+			"defaultTimeoutSeconds": 900,
+			"defaultPermissions": "approve-all"
+		},
+		"mnemosyne": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/mnemosyne.md",
+			"defaultPermissions": "approve-all",
+			"model": "claude-opus-4-5",
+			"notes": "Pantheon-owned Claude Code route: claude-opus-4-5 with agents/prompts/mnemosyne.md injected via acpx --append-system-prompt."
+		},
+		"oracle": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"model": "claude-opus-4-8",
+			"prompt": "agents/prompts/oracle.md",
+			"notes": "Pantheon-owned Claude Code route: claude-opus-4-8 with agents/prompts/oracle.md injected via acpx --append-system-prompt. Default timeout is 600s.",
+			"defaultTimeoutSeconds": 600,
+			"defaultPermissions": "approve-all"
+		},
+		"pi": {
+			"command": "npx",
+			"args": ["-y", "pi-acp@latest"],
+			"kind": "external-acp",
+			"defaultRoutable": false,
+			"debugOnly": true,
+			"notes": "Generic Pi recursion-debug escape hatch only; not a default specialist route."
+		},
+		"prometheus": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/prometheus.md",
+			"defaultPermissions": "approve-all",
+			"model": "claude-opus-4-6",
+			"notes": "Pantheon-owned Claude Code route: claude-opus-4-6 with agents/prompts/prometheus.md injected via acpx --append-system-prompt."
+		},
+		"thoughts-analyzer": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/thoughts-analyzer.md",
+			"model": "claude-sonnet-4-6",
+			"notes": "Pantheon-owned Claude Code route: claude-sonnet-4-6 with agents/prompts/thoughts-analyzer.md injected via acpx --append-system-prompt.",
+			"defaultPermissions": "approve-all"
+		},
+		"thoughts-locator": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/thoughts-locator", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/thoughts-locator.md",
+			"defaultPermissions": "approve-reads",
+			"model": "google/gemini-3-flash-preview"
+		},
+		"translator": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/translator.md",
+			"model": "claude-sonnet-4-6",
+			"notes": "Pantheon-owned Claude Code route: claude-sonnet-4-6 with agents/prompts/translator.md injected via acpx --append-system-prompt.",
+			"defaultPermissions": "approve-all"
+		},
+		"vulkanus": {
+			"command": "npx",
+			"args": ["-y", "@agentclientprotocol/claude-agent-acp@latest"],
+			"kind": "claude-agent-acp",
+			"prompt": "agents/prompts/vulkanus.md",
+			"model": "claude-sonnet-4-6",
+			"notes": "Pantheon-owned Claude Code route: claude-sonnet-4-6 with agents/prompts/vulkanus.md injected via acpx --append-system-prompt.",
+			"defaultPermissions": "approve-all"
+		},
+		"zeus": {
+			"command": "env",
+			"args": ["PI_ACP_PI_COMMAND=./agents/bin/zeus", "npx", "-y", "pi-acp@latest"],
+			"kind": "pi-acp-packaged-prompt-agent",
+			"prompt": "agents/prompts/zeus.md",
+			"model": "openai-codex/gpt-5.5"
+		}
+	}
+}

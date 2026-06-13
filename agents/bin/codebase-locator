@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+PACKAGE_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)
+AGENT_NAME=$(basename -- "$0")
+export PANTHEON_MAIN_AGENT="$AGENT_NAME"
+export PI_SKIP_VERSION_CHECK="${PI_SKIP_VERSION_CHECK:-1}"
+PROMPT_FILE="$PACKAGE_ROOT/agents/prompts/$AGENT_NAME.md"
+if [ ! -f "$PROMPT_FILE" ]; then
+  echo "pantheon-pi: missing prompt file: $PROMPT_FILE" >&2
+  exit 127
+fi
+if [ -z "${GEMINI_API_KEY:-}" ] && [ -n "${GOOGLE_GENERATIVE_AI_API_KEY:-}" ]; then
+  export GEMINI_API_KEY="$GOOGLE_GENERATIVE_AI_API_KEY"
+fi
+if [ -n "${PANTHEON_PI_MODEL:-}" ]; then
+  exec pi --model "$PANTHEON_PI_MODEL" --thinking high --tools read,grep,find,ls --system-prompt "$(cat "$PROMPT_FILE")" "$@"
+fi
+exec pi --model google/gemini-3-flash-preview --thinking high --tools read,grep,find,ls --system-prompt "$(cat "$PROMPT_FILE")" "$@"

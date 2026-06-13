@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+build/
+dist/
+coverage/
+
+# Environment and local overrides
+.env
+.env.*
+!.env.example
+!.env.langwatch.local.example
+.pi/
+
+# Logs, generated artifacts, and temp
+*.log
+reports/
+infographic/
+thoughts/
+.DS_Store
+__pycache__/
+*.pyc
+
+# Bun
+bun.lockb
+
+# Local task databases / Dolt files
+.beads/
+.dolt/
+*.db
+.beads-credential-key
+
+# Adversarial code-review
+.argus/

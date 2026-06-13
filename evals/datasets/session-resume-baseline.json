@@ -1,0 +1,38 @@
+{
+	"name": "session-resume-baseline",
+	"description": "Eval cases proving session-first delegation and resumable execution. Verifies that a delegation killed by a low maxTurns cap can be resumed in the SAME named session by a fresh one-line prompt and completes.",
+	"cases": [
+		{
+			"id": "zeus-session-first-delegation-policy",
+			"targetAgent": "zeus",
+			"inputPrompt": "In one paragraph, explain the Pantheon delegation policy for acpx sessions: when to use runType=session vs exec, how to name sessions, what to do when an agent hits a max-turns pause, and where to record session ids.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["session", "exec"],
+				"requiredRegex": [
+					"runType[\\s=]*session|session[\\s-]first",
+					"exec.{0,60}stateless|stateless.{0,60}exec|lookup",
+					"resume|continue|same session",
+					"bead|record|note"
+				],
+				"minScore": 1
+			}
+		},
+		{
+			"id": "vulkanus-session-resume-awareness",
+			"targetAgent": "vulkanus",
+			"inputPrompt": "You are mid-task implementing a feature. You receive this error:\n\nacpx exited with code 1 (max_turns)\nSession-id: neo-99-vulkanus-impl\nSession-file: /home/user/.acpx/sessions/neo-99-vulkanus-impl.json\nResumable: call acpx again with runType=session, sessionId=neo-99-vulkanus-impl, prompt=\"Continue from where you left off.\"\n\nDescribe exactly what you would do next to resume this delegation without losing context.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["neo-99-vulkanus-impl"],
+				"requiredRegex": [
+					"runType[\\s=]*session|session",
+					"resume|continue|same session",
+					"Continue from where|short prompt|one.?line"
+				],
+				"forbiddenRegex": [
+					"I(?:'ll| will| would) (?:create|start|use|open) (?:a )?(?:new|fresh) session|(?:I'll|I will|I would) start over|(?:I'll|I will|I would) restart"
+				],
+				"minScore": 1
+			}
+		}
+	]
+}

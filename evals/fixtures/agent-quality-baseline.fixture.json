@@ -1,0 +1,303 @@
+{
+	"name": "agent-quality-baseline-fixtures",
+	"description": "Explicit non-authoritative fixture outputs for local eval harness checks only. Do not use as validation or release evidence.",
+	"cases": [
+		{
+			"id": "argus-pantheon-role-smoke",
+			"targetAgent": "argus",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: blocker, validation, risk.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["blocker", "validation", "risk"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "argus: My Pantheon role covers blocker, validation, risk while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "codebase-analyzer-pantheon-role-smoke",
+			"targetAgent": "codebase-analyzer",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: trace, behavior, evidence.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["trace", "behavior", "evidence"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "codebase-analyzer: My Pantheon role covers trace, behavior, evidence while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "codebase-locator-pantheon-role-smoke",
+			"targetAgent": "codebase-locator",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: files, entry points, evidence.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["files", "entry points", "evidence"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "codebase-locator: My Pantheon role covers files, entry points, evidence while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "codebase-pattern-finder-pantheon-role-smoke",
+			"targetAgent": "codebase-pattern-finder",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: patterns, examples, evidence.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["patterns", "examples", "evidence"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "codebase-pattern-finder: My Pantheon role covers patterns, examples, evidence while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "document-writer-pantheon-role-smoke",
+			"targetAgent": "document-writer",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: documentation, audience, structure.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["documentation", "audience", "structure"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "document-writer: My Pantheon role covers documentation, audience, structure while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "explore-pantheon-role-smoke",
+			"targetAgent": "explore",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: quick, files, summary.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["quick", "files", "summary"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "explore: My Pantheon role covers quick, files, summary while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "frontend-engineer-pantheon-role-smoke",
+			"targetAgent": "frontend-engineer",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: UI, accessibility, validation.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["UI", "accessibility", "validation"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "frontend-engineer: My Pantheon role covers UI, accessibility, validation while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "hunter-code-review-pantheon-role-smoke",
+			"targetAgent": "hunter-code-review",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: review, defect, evidence.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["review", "defect", "evidence"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "hunter-code-review: My Pantheon role covers review, defect, evidence while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "hunter-comments-pantheon-role-smoke",
+			"targetAgent": "hunter-comments",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: comments, mismatch, evidence.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["comments", "mismatch", "evidence"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "hunter-comments: My Pantheon role covers comments, mismatch, evidence while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "hunter-security-pantheon-role-smoke",
+			"targetAgent": "hunter-security",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: security, exploit, severity.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["security", "exploit", "severity"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "hunter-security: My Pantheon role covers security, exploit, severity while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "hunter-silent-failure-pantheon-role-smoke",
+			"targetAgent": "hunter-silent-failure",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: silent, errors, evidence.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["silent", "errors", "evidence"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "hunter-silent-failure: My Pantheon role covers silent, errors, evidence while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "hunter-simplifier-pantheon-role-smoke",
+			"targetAgent": "hunter-simplifier",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: simplify, equivalence, risk.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["simplify", "equivalence", "risk"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "hunter-simplifier: My Pantheon role covers simplify, equivalence, risk while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "hunter-test-coverage-pantheon-role-smoke",
+			"targetAgent": "hunter-test-coverage",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: coverage, test, gap.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["coverage", "test", "gap"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "hunter-test-coverage: My Pantheon role covers coverage, test, gap while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "hunter-type-design-pantheon-role-smoke",
+			"targetAgent": "hunter-type-design",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: types, invariants, evidence.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["types", "invariants", "evidence"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "hunter-type-design: My Pantheon role covers types, invariants, evidence while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "librarian-pantheon-role-smoke",
+			"targetAgent": "librarian",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: external, documentation, sources.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["external", "documentation", "sources"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "librarian: My Pantheon role covers external, documentation, sources while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "mnemosyne-pantheon-role-smoke",
+			"targetAgent": "mnemosyne",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: map, evidence, research.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["map", "evidence", "research"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "mnemosyne: My Pantheon role covers map, evidence, research while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "oracle-pantheon-role-smoke",
+			"targetAgent": "oracle",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: risk, trade-off, recommendation.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["risk", "trade-off", "recommendation"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "oracle: My Pantheon role covers risk, trade-off, recommendation while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "prometheus-pantheon-role-smoke",
+			"targetAgent": "prometheus",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: plan, requirements, risks.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["plan", "requirements", "risks"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "prometheus: My Pantheon role covers plan, requirements, risks while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "thoughts-analyzer-pantheon-role-smoke",
+			"targetAgent": "thoughts-analyzer",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: insights, decisions, risks.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["insights", "decisions", "risks"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "thoughts-analyzer: My Pantheon role covers insights, decisions, risks while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "thoughts-locator-pantheon-role-smoke",
+			"targetAgent": "thoughts-locator",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: thoughts, documents, paths.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["thoughts", "documents", "paths"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "thoughts-locator: My Pantheon role covers thoughts, documents, paths while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "translator-pantheon-role-smoke",
+			"targetAgent": "translator",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: translate, formatting, meaning.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["translate", "formatting", "meaning"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "translator: My Pantheon role covers translate, formatting, meaning while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "vulkanus-pantheon-role-smoke",
+			"targetAgent": "vulkanus",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: RED, GREEN, VALIDATE.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["RED", "GREEN", "VALIDATE"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "vulkanus: My Pantheon role covers RED, GREEN, VALIDATE while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "zeus-pantheon-role-smoke",
+			"targetAgent": "zeus",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: delegate, acpx, acceptance criteria.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["delegate", "acpx", "acceptance criteria"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "zeus: My Pantheon role covers delegate, acpx, acceptance criteria while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "meta-reviewer-pantheon-role-smoke",
+			"targetAgent": "meta-reviewer",
+			"inputPrompt": "Do not use tools. In one sentence, describe your Pantheon role. Include these exact words: telemetry, findings, harness.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["telemetry", "findings", "harness"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "meta-reviewer: My Pantheon role covers telemetry, findings, harness while staying within Pi/acpx runtime constraints."
+		},
+		{
+			"id": "meta-reviewer-delegation-language",
+			"targetAgent": "meta-reviewer",
+			"inputPrompt": "Do not use tools. You found a prompt-gap finding. In one sentence, describe how you would fix it. Include these exact words: Vulkanus, delegate, worktree.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["Vulkanus", "delegate", "worktree"],
+				"forbiddenSubstrings": ["I edited", "I modified src/", "I changed the prompt", "I wrote to"],
+				"minScore": 1
+			},
+			"fixtureOutput": "meta-reviewer: I would delegate the fix to Vulkanus via acpx with approve-all permissions in an isolated worktree."
+		},
+		{
+			"id": "meta-reviewer-governance-gates",
+			"targetAgent": "meta-reviewer",
+			"inputPrompt": "Do not use tools. In one sentence, describe what governance gates constrain your fix cycle. Include these exact words: Oracle, CONTRACT_MODE, GRADE_MODE.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["Oracle", "CONTRACT_MODE", "GRADE_MODE"],
+				"forbiddenSubstrings": ["I edited files", "I ran tests", "opencode serve", ".config/opencode"],
+				"minScore": 1
+			},
+			"fixtureOutput": "meta-reviewer: My fix cycle is gated by Oracle architectural review, Dike CONTRACT_MODE for the eval-plan, and Dike GRADE_MODE for final evidence."
+		},
+		{
+			"id": "meta-reviewer-no-findings-path",
+			"targetAgent": "meta-reviewer",
+			"inputPrompt": "Do not use tools. If a reviewed run has no defects, what do you emit? Include these exact words: review.md, findings, clean.",
+			"expectedOutputCharacteristics": {
+				"requiredSubstrings": ["review.md", "findings", "clean"],
+				"forbiddenSubstrings": ["I manufactured", "I fabricated", "I invented"],
+				"minScore": 1
+			},
+			"fixtureOutput": "meta-reviewer: I emit a review.md and an empty findings array documenting a clean run with no defects."
+		}
+	]
+}

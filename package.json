@@ -18,6 +18,8 @@
 	},
 	"files": [
 		".env.langwatch.local.example",
+		"install.sh",
+		"docs",
 		"agents/bin",
 		"agents/manifests",
 		"agents/prompts",

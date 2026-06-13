@@ -10,7 +10,7 @@ It's an installable Pi **package**, not a wrapper. `pantheon` launches your exis
 
 - **What it is** - an installable Pi package that turns one coding agent into an evaluated, observable fleet: a builder, independent evaluators, hunters, and researchers, routed over a protocol (`acpx`) to the right model for each job.
 - **Why it's beyond a basic loop** - the harness *itself* is the product. Prompts, tools, routing, skills, evals, and review gates are versioned and measured; a meta-improvement loop turns trace evidence into human-approved harness changes. Grounded in current AHE research ([Agentic Harness Engineering](https://arxiv.org/abs/2604.25850), [Meta-Harness](https://arxiv.org/abs/2603.28052)) - applied, not just cited.
-- **Proof it works** - we ran a single agentic session for **over a day** and had it deliver. And observability paid for itself: **~34% of delegated wall-clock was being lost to failed/timed-out runs** (surfaced in LangWatch traces, diagnosed via a 7-class failure taxonomy, fixed by a resume-not-restart redesign). The numbers are a *byproduct* of the setup - the system that records the loop is the one that improves it.
+- **Proof it works** - we ran a single agentic session for **over a day** and had it deliver. And observability paid for itself: **~34% of delegated wall-clock was being lost to failed/timed-out runs** (surfaced in LangWatch traces, diagnosed via a 7-class failure taxonomy, fixed by a resume-not-restart redesign; exported evidence: [`artifacts/hackathon-proof/pantheon-34pct-improvement-pocket.json`](artifacts/hackathon-proof/pantheon-34pct-improvement-pocket.json)). The numbers are a *byproduct* of the setup - the system that records the loop is the one that improves it.
 - **Key architectural bet** - `acpx`, a delegation *protocol*, lets us launch any harness, any agent, any model, anywhere (local, VM, remote). The fleet isn't wired to one machine or one provider.
 - **Demo path** - `/define-project` → `/goal "…"` → watch the Subagent widget run the fleet live → `pantheon telemetry similar "…"` to query what happened. See [Watch the fleet work, live](#watch-the-fleet-work-live).
 - **Team** - Ihor & Joel (Neno). This is our production engineering harness, distilled.
@@ -166,6 +166,8 @@ acpx <agent> exec "<prompt>"      # one-shot, stateless lookup
 - **Slash commands.** `/acpx` shows the acpx path and usage; `/acpx-monitor` (also `ctrl+0`) opens the Agent Explorer overlay.
 - **Bundled runtime tools** added to the Pi session: `code_exec` (bounded shell confined to the workspace), `hashline` (hash-safe edits that refuse to apply on stale content), `structural_search` (ast-grep structural search/rewrite), LSP tools via `pi-lsp`, and best-effort post-write diagnostics for JS/TS, Deno, Rust, and Elixir.
 
+**Why a protocol, not an integration.** Agentic compute is metered now, not subsidized - every delegated run carries a real per-token cost, and provider terms can shift fast (they did, April 2026). acpx is a vendor-neutral delegation layer, so model choice is a config decision, not an architectural commitment. That's what makes the routing below a utilization strategy rather than a default: frontier-model compute goes only to judgment-heavy roles where it changes the outcome (oracle, dike, argus), while cheap, fast models absorb the high-volume lookups. Provider-independence is the resilience property; per-role routing is the efficiency one.
+
 ## Persistent goals, graded by someone else
 
 Pantheon bundles the open-source **[pi-goal](https://www.npmjs.com/package/pi-goal) extension (by michaelliv, MIT)**, so `/goal "<objective>"` ships in the box. It's a persistent, budget-aware, resumable objective loop: it keeps the primary agent working across turns until the objective is complete, paused, or a token budget is reached, and it survives reloads (it force-pauses on reload and never silently resumes).
@@ -204,7 +206,7 @@ Full command set: `pantheon telemetry <runs|slow|trace|session-file|search|simil
 
 Observability isn't decoration - it changed the design. Measured on our delegated-run telemetry corpus, **~34% of delegated wall-clock was being lost to failed or timed-out runs.** The local telemetry index surfaced it; the 7-class failure taxonomy in the traces exposed the causes (turn limits, timeouts, session/model issues); the fix was the **session-first, resume-not-restart** redesign now built into `acpx` - a run that hits its turn limit pauses as a resumable "needs attention" handoff instead of dying.
 
-Observe → diagnose → fix. The harness that records the loop is the same one that let us improve it. This isn't a one-off: the same loop lets us point the **meta-reviewer** at the trace store to find slow sessions and optimize them. (Figure is from our own analyzed corpus, not a universal benchmark.)
+Observe → diagnose → fix. The harness that records the loop is the same one that let us improve it. This isn't a one-off: the same loop lets us point the **meta-reviewer** at the trace store to find slow sessions and optimize them. (Figure is from our own analyzed corpus, not a universal benchmark.) See the exported before/after pocket artifact: [`artifacts/hackathon-proof/pantheon-34pct-improvement-pocket.json`](artifacts/hackathon-proof/pantheon-34pct-improvement-pocket.json).
 
 ## Agentic Harness Engineering, not prompt tweaking
 

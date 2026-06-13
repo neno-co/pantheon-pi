@@ -12,7 +12,7 @@ It's an installable Pi **package**, not a wrapper. `pantheon` launches your exis
 - **Why it's beyond a basic loop** - the harness *itself* is the product. Prompts, tools, routing, skills, evals, and review gates are versioned and measured; a meta-improvement loop turns trace evidence into human-approved harness changes. Grounded in current AHE research ([Agentic Harness Engineering](https://arxiv.org/abs/2604.25850), [Meta-Harness](https://arxiv.org/abs/2603.28052)) - applied, not just cited.
 - **Proof it works** - we ran a single agentic session for **over a day** and had it deliver. And observability paid for itself: **~34% of delegated wall-clock was being lost to failed/timed-out runs** (surfaced in LangWatch traces, diagnosed via a 7-class failure taxonomy, fixed by a resume-not-restart redesign; exported evidence: [`artifacts/hackathon-proof/pantheon-34pct-improvement-pocket.json`](artifacts/hackathon-proof/pantheon-34pct-improvement-pocket.json)). The numbers are a *byproduct* of the setup - the system that records the loop is the one that improves it.
 - **Key architectural bet** - `acpx`, a delegation *protocol*, lets us launch any harness, any agent, any model, anywhere (local, VM, remote). The fleet isn't wired to one machine or one provider.
-- **Demo path** - `/define-project` → `/goal "…"` → watch the Subagent widget run the fleet live → `pantheon telemetry similar "…"` to query what happened. See [Watch the fleet work, live](#watch-the-fleet-work-live).
+- **Demo path** - `/define-project` → `/goal "..."` → watch the Subagent widget run the fleet live → `pantheon telemetry similar "..."` to query what happened. See [Watch the fleet work, live](#watch-the-fleet-work-live).
 - **Team** - Ihor & Joel (Neno). This is our production engineering harness, distilled.
 
 > **Judges:** point your own coding agent at this repo and ask it to summarize the harness. The README is written to be read by an agent as well as a human - let Claude Code / Cursor / Codex crawl it and give you the bigger picture in your own loop. That round-trip *is* the pitch: a harness legible enough that another agent can explain it back to you.
@@ -117,11 +117,11 @@ A passive **Subagent widget** renders every delegated run inline in your termina
 ```text
 ┌─ Subagents ───────────────────────────────────────────────┐
 │ ● oracle      done    api-redesign-oracle-review           │
-│   └ "Prefer a token-bucket per workspace; see tradeoffs…"  │
+│   └ "Prefer a token-bucket per workspace; see tradeoffs..."  │
 │ ◐ vulkanus    active  upload-limit-vulkanus-impl           │
-│   └ editing src/api/upload.ts … 3 tools, 41s               │
+│   └ editing src/api/upload.ts ... 3 tools, 41s               │
 │ ⚠ argus       paused  upload-limit-argus-review  (resume)  │
-│   └ turn limit reached - resume: acpx argus session …      │
+│   └ turn limit reached - resume: acpx argus session ...      │
 │ ○ dike        queued  upload-limit-dike-grade              │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -134,7 +134,7 @@ One primary agent, many focused experts. The package ships **27 specialist agent
 | --- | --- | --- |
 | **Orchestration / build** | `athena` (default primary), `zeus`, `vulkanus`, `frontend-engineer` | Build, implement, and coordinate work |
 | **Planning / architecture** | `prometheus`, `oracle` | Plan the work; advise on architecture tradeoffs |
-| **Independent evaluation** | `dike` (Done-Contract grading), `argus` (adversarial review), `meta-reviewer` (telemetry-backed after-action) | Grade "done" - independently of who built it |
+| **Independent evaluation** | `dike` (Done-Contract grading), `argus` (adversarial review + hunter swarm), `meta-reviewer` (telemetry-backed after-action) | Grade "done" - independently of who built it |
 | **Hunters** | `hunter-security`, `hunter-silent-failure`, `hunter-type-design`, `hunter-test-coverage`, `hunter-comments`, `hunter-code-review`, `hunter-simplifier` | Targeted code-quality and risk sweeps |
 | **Research / codebase** | `mnemosyne`, `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`, `explore`, `thoughts-locator`, `thoughts-analyzer`, `librarian` | Find, read, and explain code and notes |
 | **Experimental models** | `nemotron` | Try NVIDIA Nemotron through a user-local Nebius Token Factory provider |
@@ -208,6 +208,8 @@ Pantheon bundles the open-source **[pi-goal](https://www.npmjs.com/package/pi-go
 On its own, pi-goal runs a **single-agent** loop with a self-completion-audit. The Pantheon difference is a **composition** - the **Separate-Evaluator-Implementer (SEI)** loop:
 
 > The agent driving the goal (`athena`) routes verification to **independent** evaluators via `acpx`. A mandatory `argus` adversarial review must pass before long-term work lands, and `dike` grades the result against a frozen Done-Contract - **PASS / FAIL / UNVERIFIED**, demanding executed proof and refusing to grade unwritten criteria.
+
+`argus` does not just skim the diff. It can launch a hunter swarm: security, silent-failure, type-design, test-coverage, comments, simplifier, and code-review specialists. Each finding must be proven with file/line evidence, a concrete failure mode, and a reproducible or logically grounded argument. Unproven suspicions stay out of the final review instead of becoming hallucinated blockers.
 
 So "done" is graded by a different agent on a different model than the one that wrote the code - not self-declared.
 

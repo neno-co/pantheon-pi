@@ -1,6 +1,18 @@
 # Pantheon
 
-**A Pi-native loop stack for software-engineering agents: specialist delegation, independent evaluation, trace-native observability, and evidence-gated harness improvement — wrapped around your existing Pi session.**
+**A native loop stack for software-engineering agents: specialist delegation, independent evaluation, trace-native observability, and evidence-gated harness improvement based on Pi-agent.**
+
+## The seven pillars
+
+Pantheon is opinionated about what makes agent loops trustworthy:
+
+1. **Long-running agents** — resumable work over real tasks, not one-shot prompts.
+2. **Independent evaluators** — Dike/Argus grade evidence instead of letting builders self-certify.
+3. **Trace-native observability** — every main turn, tool call, and delegation becomes inspectable telemetry.
+4. **Semantic experience memory** — prior runs are searchable by text and meaning.
+5. **Projects Wiki as company brain** — durable decisions, research, and handoffs live outside chat.
+6. **Beads as shared work graph** — task/dependency state survives across sessions and agents.
+7. **Evidence-gated AHE** — trace evidence drives harness changes only after eval/review.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Built with Bun](https://img.shields.io/badge/built%20with-Bun-000000.svg)](https://bun.sh)
@@ -11,13 +23,13 @@
 
 > Demo GIF placeholder: record Pantheon working in Pi and save it as `docs/pantheon-demo.gif`.
 
-Most coding agents are a single tool loop: one model, one context, calling tools until it stops — and **the same agent that did the work declares it done.** Pantheon composes more. It stacks the Loopcraft ladder for software engineering: a primary builder, specialist agents, long-running sessions, independent evaluators, eval gates, telemetry, and a meta-improvement loop that turns trace evidence into safer, human-approved harness changes.
+Most coding agents are a single tool loop: one model, one context, calling tools until it stops and **the same agent that did the work declares it done.** Pantheon composes more. It stacks the Loopcraft ladder for software engineering: a primary builder, specialist agents, long-running sessions, independent evaluators, eval gates, telemetry, and a meta-improvement loop that turns trace evidence into safer, human-approved harness changes.
 
-It's an installable Pi **package** — not a replacement, not a wrapper. `pantheon` launches your existing Pi binary with a Pantheon agent as the default primary, registers the delegation tool and a live Subagent UI, bundles a persistent `/goal` loop, and adds optional telemetry. Plain `pi` stays vanilla.
+It's an installable Pi **package** not a replacement, not a wrapper. `pantheon` launches your existing Pi binary with a Pantheon agent as the default primary, registers the delegation tool and a live Subagent UI, bundles a persistent `/goal` loop, and adds telemetry. Plain `pi` stays vanilla.
 
 One line to install, then ask for a specialist by name or hand it a whole `/goal`. Every delegated run is graded by a *different* agent and recorded as an OpenTelemetry trace you can query later.
 
-## 30-second start
+## Installation
 
 Requirements: [Bun](https://bun.sh), [Pi](https://github.com/earendil-works), `acpx`, Git, and authenticated local provider CLIs on your `PATH`.
 
@@ -25,9 +37,8 @@ Pantheon is intentionally opinionated and multi-provider. Before using the full 
 
 ```bash
 claude auth login  # Claude Code / Anthropic auth
-codex login        # OpenAI Codex auth
-gemini auth login  # Google Gemini auth
 ```
+Then use `/login` to login for openai-codex and gemini providers.
 
 If any provider is missing or unauthenticated, only the agents backed by the remaining providers will work reliably.
 

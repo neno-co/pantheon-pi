@@ -33,3 +33,7 @@ bun.lockb
 
 # Adversarial code-review
 .argus/
+
+# Train orchestrator runtime state (per-project state, logs, locks, scratch)
+train/.data/
+train/node_modules/

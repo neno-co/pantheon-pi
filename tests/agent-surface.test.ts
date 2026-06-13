@@ -79,7 +79,8 @@ describe("manifest-authoritative agent surface", () => {
 	test("README and SPEC present the public in-app subagents product surface", () => {
 		const readme = readFileSync(path.join(root, "README.md"), "utf8");
 		const spec = readFileSync(path.join(root, "SPEC.md"), "utf8");
-		expect(readme).toContain("# In-App Subagents for Pi");
+		expect(readme).toContain("# Pantheon");
+		expect(readme).toContain("A Pi-native loop stack for software-engineering agents");
 		expect(readme).toContain("Internal project-management data, generated reports, private research notes");
 		expect(spec).toContain("# In-App Subagents Architecture");
 		for (const document of [readme, spec]) {

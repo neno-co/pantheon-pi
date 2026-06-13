@@ -30,5 +30,7 @@ describe("install.sh", () => {
 		expect(output).toContain("cd /tmp/pantheon-pi-install-test && pi install .");
 		expect(output).toContain("cd /tmp/pantheon-pi-install-test && bun link");
 		expect(output).toContain("cd /tmp/pantheon-pi-install-test && pantheon init");
+		expect(output).toContain("Claude Code, OpenAI Codex, and Gemini are authenticated locally");
+		expect(output).toContain("codex login");
 	});
 });

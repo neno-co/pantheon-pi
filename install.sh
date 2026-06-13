@@ -104,7 +104,12 @@ run_in_dir "$PANTHEON_INSTALL_DIR" bun link
 log "Verifying packaged assets"
 run_in_dir "$PANTHEON_INSTALL_DIR" pantheon init
 
-log "Pantheon installed. Try:"
+log "Pantheon installed. Before first use, make sure Claude Code, OpenAI Codex, and Gemini are authenticated locally."
+printf '  claude auth login  # Claude Code / Anthropic auth\n'
+printf '  codex login        # OpenAI Codex auth\n'
+printf '  gemini auth login  # Google Gemini auth\n'
+printf '\n'
+log "Then try:"
 printf '  pantheon\n'
 printf '  pantheon --agent oracle\n'
 printf '  pantheon telemetry stats\n'

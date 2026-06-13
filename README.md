@@ -19,7 +19,17 @@ One line to install, then ask for a specialist by name or hand it a whole `/goal
 
 ## 30-second start
 
-Requirements: [Bun](https://bun.sh), [Pi](https://github.com/earendil-works), `acpx`, and Git on your `PATH`.
+Requirements: [Bun](https://bun.sh), [Pi](https://github.com/earendil-works), `acpx`, Git, and authenticated local provider CLIs on your `PATH`.
+
+Pantheon is intentionally opinionated and multi-provider. Before using the full fleet, authenticate the providers it routes to:
+
+```bash
+claude auth login  # Claude Code / Anthropic auth
+codex login        # OpenAI Codex auth
+gemini auth login  # Google Gemini auth
+```
+
+If any provider is missing or unauthenticated, only the agents backed by the remaining providers will work reliably.
 
 ```bash
 curl -fsSL https://pantheon.viche.ai/install.sh | bash

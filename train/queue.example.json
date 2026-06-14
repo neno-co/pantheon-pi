@@ -1,0 +1,26 @@
+{
+	"project": "https://linear.app/your-org/project/your-project-abc123def456/overview",
+	"baseBranch": "feature/your-train-branch",
+	"repoPath": "/absolute/path/to/your/repo",
+	"worktreeSetup": "~/.deno/bin/deno run -A scripts/setup-worktree.ts {branch} --from origin/{base}",
+	"stageModels": {
+		"implement": "sonnet",
+		"review": "opus",
+		"address": "sonnet",
+		"merge": "opus"
+	},
+	"tasks": [
+		{
+			"id": "NEO-123",
+			"title": "Implement accountant inbox parsing",
+			"linearUrl": "https://linear.app/your-org/issue/NEO-123",
+			"repo": "your-org/your-repo"
+		},
+		{
+			"id": "NEO-119",
+			"title": "Refactor task source resolution",
+			"linearUrl": "https://linear.app/your-org/issue/NEO-119",
+			"repo": "your-org/your-repo"
+		}
+	]
+}
